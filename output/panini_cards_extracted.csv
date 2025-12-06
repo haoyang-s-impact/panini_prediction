@@ -1,0 +1,98 @@
+image,product_id,player_name,team,card_year,card_series,card_number,serial_number,serial_max,is_rookie,is_autograph,has_patch,is_refractor,parallel_type,card_features,grading_company,grade,grade_subtype,price_cny,price_usd,shipping_price,bid_times,end_time,sold_status,ocr_avg_confidence,needs_review
+微信图片_20251017223412_5_1274.jpg,,Stephen Curry,Golden State Warriors,2022-23,Panini Prizm,,,,False,False,False,False,,,,,,10750.0,,,38,2024-12-2021:34:02,Sold,0.5703588235294117,True
+微信图片_20251017223413_6_1274.jpg,,Stephen Curry,Golden State Warriors,,,,,,False,True,False,True,Panini Silver,"Autograph, Refractor, Silver Parallel",,,,4809.0,,,41,2025-04-06 21:51:00,Sold,0.6039787878787879,False
+微信图片_20251017223414_7_1274.jpg,,Stephen Curry,,2024-25,Panini Prizm,,,,False,False,False,False,,,,,,4088.45,,,36,2025-09-0421:22:00,Sold,0.702975,False
+微信图片_20251122072052_8_1274.jpg,,Ja Morant,,,,,,,True,False,False,False,Panini Gold,"Rookie, Gold Parallel",,,,6201.0,,,44,,Sold,0.5848823529411763,True
+微信图片_20251122072053_9_1274.jpg,,Ja Morant,Memphis Grizzlies,2019-20,Panini One,,/35,35,True,True,True,False,Panini Gold,"Autograph, Rookie, Patch, RPA, Gold Parallel",,,,6090.52,,,31,,Sold,0.6369437499999999,False
+微信图片_20251122072055_10_1274.jpg,,Ja Morant,Memphis Grizzlies,2019-20,Panini One,,9/10,10,True,False,False,False,Panini Gold,"Rookie, Gold Parallel",,,,4088.0,,,17,,,0.6240526315789473,False
+微信图片_20251122072057_11_1274.jpg,,Ja Morant,,,,,49/49,49,True,True,False,False,,"Autograph, Rookie",,,,6050.2,,,38,,Sold,0.5086944444444446,True
+微信图片_20251122072058_12_1274.jpg,,,,,,,05/25,25,False,True,True,False,,"Autograph, Patch",,,,6621.11,,,26,2025-11-0220:04:00,Sold,0.57918125,True
+微信图片_20251122072100_13_1274.jpg,,Ja Morant,Memphis Grizzlies,,,,/35,35,True,True,True,False,Panini Gold,"Autograph, Rookie, Patch, RPA, Gold Parallel",,,,5955.0,,,45,,Sold,0.643575,False
+微信图片_20251122072101_14_1274.jpg,,Ja Morant,Memphis Grizzlies,,,,,,False,False,False,False,,,,,,2744.76,,,50,2025-10-2321:30:10,,0.6620736842105263,False
+微信图片_20251122072103_15_1274.jpg,,,Memphis Grizzlies,2019-20,Panini One,,49,,True,True,True,False,,"Autograph, Rookie, RPA",,,,6535.0,,,67,,Sold,0.62388,False
+微信图片_20251122072105_16_1274.jpg,,,,,,,,,False,True,True,False,,"Autograph, Patch",,,,2988.0,,,47,2025-11-0220:07:23,Sold,0.6445266666666668,True
+微信图片_20251122072107_17_1274.jpg,,Ja Morant,Memphis Grizzlies,,,,,,False,False,False,False,,,,,,4300.0,,,47,2025-02-1120:24:30,,0.7041470588235293,False
+微信图片_20251122072108_18_1274.jpg,,Ja Morant,Memphis Grizzlies,,,,,,False,False,False,False,,,,,,3688.0,,,45,2024-12-19 22:12:00,,0.5847611111111112,True
+微信图片_20251122072110_19_1274.jpg,,Ja Morant,Memphis Grizzlies,,,,,,False,False,False,False,,,,,,4055.0,,,21,,Sold,0.5533105263157894,True
+微信图片_20251122072112_20_1274.jpg,,,,2021-22,Panini One,,,,False,False,False,False,,,,,,3900.0,,,37,,Sold,0.6252933333333334,False
+微信图片_20251122072113_21_1274.jpg,,,Memphis Grizzlies,,,,,,False,False,False,False,,,,,,3921.0,,,50,,,0.6147166666666666,True
+微信图片_20251122072115_22_1274.jpg,,,Memphis Grizzlies,,,,,,False,False,False,False,,,,,,3700.0,,,9,2025-06-0920:42:51,Sold,0.5120894736842105,True
+微信图片_20251122072117_23_1274.jpg,,Ja Morant,,,,,23/25,25,False,True,True,False,,"Autograph, Patch",,,,3710.0,,,10,2025-02-1621:06:15,,0.6063000000000001,False
+微信图片_20251122072119_24_1274.jpg,,,,,,,10/10,10,False,False,False,False,,,,,,7201.0,,,15,,,0.5671941176470588,True
+微信图片_20251122072120_25_1274.jpg,,Ja Morant,Memphis Grizzlies,2022-23,Panini One,,,,False,False,False,False,,,,,,2655.0,,,631,2025-10-1920:47:00,Sold,0.6387578947368421,False
+微信图片_20251122072121_26_1274.jpg,,Ja Morant,Memphis Grizzlies,2022-23,Panini One,,,,False,False,False,False,,,,,,3300.0,,,24,2025-10-1221:50:00,Sold,0.5969842105263158,True
+微信图片_20251122072122_27_1274.jpg,,Shai Gilgeous-Alexander,Minnesota Timberwolves,2018-19,Panini Prizm,184,,,True,False,False,True,Panini Silver,"Rookie, Refractor, Silver Parallel",,,,1350.01,,,19,,Sold,0.6909727272727272,False
+微信图片_20251122072123_28_1274.jpg,,Shai Gilgeous-Alexander,Los Angeles Clippers,2018-19,Panini Prizm,,,,False,False,False,False,,,,,,691.0,,,17,2025-11-0220:26:31,Sold,0.6375,False
+微信图片_20251122072124_29_1274.jpg,,Shai Gilgeous-Alexander,Los Angeles Clippers,2018-19,Panini Prizm,184,,,True,False,False,True,Panini Silver,"Rookie, Refractor, Silver Parallel",,,,6008.0,,,96,2025-10-2122:09:00,Sold,0.7166416666666667,False
+微信图片_20251122072340_30_1274.jpg,,Shai Gilgeous-Alexander,Los Angeles Clippers,2018-19,Panini Prizm,,99,,True,False,False,True,Panini Blue,"Rookie, Refractor, Blue Parallel",,,,58316.0,,,162,2025-11-0223:02:13,Sold,0.5806405405405406,True
+微信图片_20251122072341_31_1274.jpg,,Shai Gilgeous-Alexander,Los Angeles Clippers,2018-19,Panini Prizm,,,,True,False,False,False,Panini Gold,"Rookie, Gold Parallel",,,,10503.0,,,46,,Sold,0.6088314285714286,False
+微信图片_20251122072344_32_1274.jpg,,Shai Gilgeous-Alexander,Minnesota Timberwolves,2018-19,Panini Prizm,184,,,True,False,False,True,Panini Green,"Rookie, Refractor, Green Parallel",,,,531.99,,,11,,Sold,0.6927411764705882,False
+微信图片_20251122072347_33_1274.jpg,,Shai Gilgeous-Alexander,Minnesota Timberwolves,2018-19,Panini Prizm,,11/88,88,True,False,False,True,,"Rookie, Refractor",,,,4599.0,,,41,2025-11-0121:38:48,Sold,0.7279810810810812,False
+微信图片_20251122072349_34_1274.jpg,,Shai Gilgeous-Alexander,Los Angeles Clippers,2018-19,Panini Prizm,,175,,True,False,False,True,Panini Gold,"Rookie, Refractor, Gold Parallel",,,,15331.0,,,52,2025-10-2621:59:55,Sold,0.5877823529411765,True
+微信图片_20251122072352_35_1274.jpg,,Shai Gilgeous-Alexander,Los Angeles Clippers,2018-19,Panini Prizm,,,,True,False,False,True,Panini Green,"Rookie, Refractor, Green Parallel",,,,478.0,,,26,2025-10-2621:00:00,Sold,0.7188722222222224,False
+微信图片_20251122072355_36_1274.jpg,,Shai Gilgeous-Alexander,Los Angeles Clippers,2018-19,Panini Prizm,184,,,True,False,False,True,Panini Red Ice,"Rookie, Refractor, Red Ice Parallel",,,,3314.54,,,43,2025-10-2620:00:00,Sold,0.7717852941176472,False
+微信图片_20251122072357_37_1274.jpg,,Shai Gilgeous-Alexander,Los Angeles Clippers,2018-19,Panini Prizm,,,,True,False,False,True,Panini Pink,"Rookie, Refractor, Pink Parallel",,,,3238.0,,,36,,Sold,0.6987588235294118,False
+微信图片_20251122072400_38_1274.jpg,,Shai Gilgeous-Alexander,Los Angeles Clippers,2018-19,Panini Prizm,,,,True,False,False,False,Panini Gold,"Rookie, Gold Parallel",,,,13874.0,,,62,,Sold,0.637963888888889,False
+微信图片_20251122072402_39_1274.jpg,,Shai Gilgeous-Alexander,Los Angeles Clippers,,,,,,True,False,False,False,Panini Gold,"Rookie, Gold Parallel",,,,2988.0,,,48,,Sold,0.714764516129032,False
+微信图片_20251122072405_40_1274.jpg,,Shai Gilgeous-Alexander,,2018-19,Panini Prizm,,,,True,False,False,False,Panini Gold,"Rookie, Gold Parallel",,,,465.66,,,313,2025-10-0520:40:20,Sold,0.6014428571428571,False
+微信图片_20251122072408_41_1274.jpg,,Shai Gilgeous-Alexander,Los Angeles Clippers,2018-19,Panini Prizm,,,,True,False,False,True,Panini Gold,"Rookie, Refractor, Gold Parallel",,,,5299.0,,,46,,Sold,0.6002171428571429,False
+微信图片_20251122072410_42_1274.jpg,,Shai Gilgeous-Alexander,Minnesota Timberwolves,2018-19,Panini Prizm,,89/125,125,True,False,False,False,Panini White,"Rookie, White Parallel",,,,3492.92,,,27,2025-09-1421:55:00,Sold,0.6556511627906978,False
+微信图片_20251122072411_43_1274.jpg,,Shai Gilgeous-Alexander,Minnesota Timberwolves,2018-19,Panini Prizm,184,,,True,False,False,True,,"Rookie, Refractor",,,,914.99,,,16,2025-09-0420:15:30,Sold,0.6968128205128203,False
+微信图片_20251122072412_44_1274.jpg,,,Minnesota Timberwolves,2018-19,Panini Prizm,,,,True,False,False,False,Panini Purple,"Rookie, Purple Parallel",,,,5753.33,,,33,2025-08-2921:42:40,Sold,0.7041861111111112,False
+微信图片_20251122072413_45_1274.jpg,,Shai Gilgeous-Alexander,Minnesota Timberwolves,,,184,,,False,False,False,False,Panini Green,Green Parallel,,,,19200.0,,,51,2025-08-13 21:22:00,Sold,0.610995652173913,False
+微信图片_20251122072519_46_1274.jpg,,Shai Gilgeous-Alexander,,2018-19,Panini Prizm,184,,,True,False,False,False,Panini Purple,"Rookie, Purple Parallel",,,,17750.0,,,49,2025-08-0521:45:00,Sold,0.7051702702702702,False
+微信图片_20251122072520_47_1274.jpg,,,,2018-19,Panini Prizm,,75,,True,False,False,True,Panini Purple,"Rookie, Refractor, Purple Parallel",,,,22165.65,,,54,2025-07-2722:27:50,Sold,0.6166372093023255,False
+微信图片_20251122072521_48_1274.jpg,,,Minnesota Timberwolves,2018-19,Panini Prizm,,,,False,False,False,False,Panini Purple,Purple Parallel,,,,6063.83,,,53,,Sold,0.5874815789473684,True
+微信图片_20251122072522_49_1274.jpg,,Shai Gilgeous-Alexander,Minnesota Timberwolves,2018-19,Panini Prizm,184,,,True,False,False,False,Panini Blue,"Rookie, Blue Parallel",,,,21916.0,,,61,,Sold,0.6978380952380954,False
+微信图片_20251122072523_50_1274.jpg,,Shai Gilgeous-Alexander,Los Angeles Clippers,,,,35,,True,False,False,True,Panini Purple,"Rookie, Refractor, Purple Parallel",,,,24017.07,,,68,2025-06-2222:27:20,Sold,0.5883499999999999,True
+微信图片_20251122072525_51_1274.jpg,,Shai Gilgeous-Alexander,Los Angeles Clippers,2018-19,Panini Prizm,,,,True,False,False,False,,Rookie,,,,120078.88,,,55,2025-04-0623:03:11,Sold,0.6106794871794872,False
+微信图片_20251122072526_52_1274.jpg,,Shai Gilgeous-Alexander,Los Angeles Clippers,,,,24/25,25,True,False,False,True,,"Rookie, Refractor",,,,35369.2,,,52,2025-05-0422:08:30,Sold,0.6209585365853658,False
+微信图片_20251122072527_53_1274.jpg,,Shai Gilgeous-Alexander,Minnesota Timberwolves,,,,,,True,False,False,True,,"Rookie, Refractor",,,,31139.0,,,72,2025-05-18 21:40:30,Sold,0.6137615384615385,False
+微信图片_20251122072528_54_1274.jpg,,Shai Gilgeous-Alexander,Minnesota Timberwolves,2018-19,Panini Prizm,,25,,True,False,False,True,,"Rookie, Refractor",,,,25805.0,,,50,2024-12-2822:28:50,Sold,0.7191325581395348,False
+微信图片_20251122072530_55_1274.jpg,,Shai Gilgeous-Alexander,,2018-19,Panini Prizm,,/49,49,True,False,False,True,Panini Orange,"Rookie, Refractor, Orange Parallel",,,,14756.0,,,59,2025-01-1121:03:00,Sold,0.5489756097560975,True
+微信图片_20251122072535_56_1274.jpg,,,Los Angeles Clippers,2018-19,Panini Prizm,,,,True,False,False,False,,Rookie,,,,906.0,,,30,2025-05-0419:42:30,Sold,0.6166692307692309,False
+微信图片_20251122072536_57_1274.jpg,,Shai Gilgeous-Alexander,Minnesota Timberwolves,2018-19,Panini Prizm,184,,,True,False,False,False,,Rookie,,,,232.0,,,13,2025-06-2321:46:45,Sold,0.6702666666666667,False
+微信图片_20251122072537_58_1274.jpg,,Shai Gilgeous-Alexander,Los Angeles Clippers,2018-19,Panini Prizm,,,,True,False,False,False,,Rookie,,,,130.0,,,15,2025-11-0320:33:00,Sold,0.7297787878787878,False
+微信图片_20251122072538_59_1274.jpg,,Shai Gilgeous-Alexander,Los Angeles Clippers,,,,5/10,10,True,False,True,False,Panini Gold,"Rookie, Patch, Gold Parallel",,,,200250.0,,,70,2025-06-08 23:09:24,Sold,0.5225872340425531,True
+微信图片_20251122072539_60_1274.jpg,,,Charlotte Hornets,2019-20,Panini Flawless,,,,False,True,True,False,,"Autograph, Patch",,,,72007.88,,,65,2025-04-1322:19:00,Sold,0.5780666666666666,True
+微信图片_20251122072540_61_1274.jpg,,,,,,,25,,False,False,True,False,,Patch,,,,32800.0,,,33,2025-04-0621:26:00,Sold,0.5937241379310346,True
+微信图片_20251122072541_62_1274.jpg,,Shai Gilgeous-Alexander,Oklahoma City Thunder,,,,,,False,False,True,False,,Patch,,,,25107.6,,,,2025-07-1211:50:26,Sold,0.5580444444444445,True
+微信图片_20251122072543_63_1274.jpg,,,Oklahoma City Thunder,,,,,,False,False,False,False,,,,,,25066.0,,,63,2025-06-0821:52:00,Sold,0.6147941176470587,True
+微信图片_20251122072544_64_1274.jpg,,Shai Gilgeous-Alexander,,,,,9/10,10,True,True,True,False,,RPA,,,,129161.0,,,165,2025-02-15 21:40:35,Sold,0.5566521739130433,True
+微信图片_20251122072545_65_1274.jpg,,Shai Gilgeous-Alexander,Toronto Raptors,2019-20,Panini Flawless,,,,True,True,True,False,Panini Gold,"Autograph, Rookie, Patch, Gold Parallel",,,,29250.1,,,43,2025-08-3122:16:48,Sold,0.6189685714285714,False
+微信图片_20251122072546_66_1274.jpg,,Shai Gilgeous-Alexander,Oklahoma City Thunder,,,,,,False,False,False,False,,,,,,38750.0,,,95,,Sold,0.5512872340425532,True
+微信图片_20251122072547_67_1274.jpg,,Shai Gilgeous-Alexander,Oklahoma City Thunder,2022-23,Panini Flawless,,15,,False,False,False,False,,,,,,22751.0,,,35,2025-04-2721:48:00,Sold,0.6697028571428573,False
+微信图片_20251122072549_68_1274.jpg,,Shai Gilgeous-Alexander,Oklahoma City Thunder,2023-24,Panini Flawless,,,,False,False,False,False,,,,,,23750.0,,,39,,Sold,0.673215625,False
+微信图片_20251122072550_69_1274.jpg,,Shai Gilgeous-Alexander,Los Angeles Clippers,,,,9/10,10,True,True,True,False,Panini Gold,"Autograph, Rookie, Patch, RPA, Gold Parallel",,,,348994.0,,,172,2025-08-2423:03:47,Sold,0.5637243243243244,True
+微信图片_20251122072551_70_1274.jpg,,,Oklahoma City Thunder,2019-20,Panini Flawless,,10,,False,True,False,False,Panini Gold,"Autograph, Gold Parallel",PSA,9.0,,55805.0,,,105,,Sold,0.5926543478260868,True
+微信图片_20251122072552_71_1274.jpg,,Shai Gilgeous-Alexander,,,,,,,False,False,False,False,Panini White,White Parallel,,,,49750.0,,,67,2025-03-2921:45:00,Sold,0.5587972222222222,True
+微信图片_20251122072553_72_1274.jpg,,Shai Gilgeous-Alexander,Oklahoma City Thunder,2022-23,Panini Flawless,,10,,False,True,False,False,,Autograph,BGS,8.5,,35138.0,,,80,2025-06-29 22:04:00,Sold,0.5393836734693878,True
+微信图片_20251122072555_73_1274.jpg,,Shai Gilgeous-Alexander,,,,,2/10,10,False,True,True,False,Panini Gold,"Autograph, Patch, Gold Parallel",,,,61139.0,,,,,,0.77479,False
+微信图片_20251122072556_74_1274.jpg,,Shai Gilgeous-Alexander,Oklahoma City Thunder,2021-22,Panini Flawless,,5,,False,True,True,False,Panini Green,"Autograph, Patch, Green Parallel",,,,17638.0,,,,,,0.7303782608695653,False
+微信图片_20251122072557_75_1274.jpg,,Shai Gilgeous-Alexander,Oklahoma City Thunder,,,,1/5,5,False,False,False,False,,,,,,24833.0,,,,,,0.7150173913043478,False
+微信图片_20251122072558_76_1274.png,,Ja Morant,Memphis Grizzlies,2019-20,Panini Prizm,249,,,True,False,False,False,Panini Gold,"Rookie, Gold Parallel",,,,145.0,,,12,,Sold,0.7308766666666667,False
+微信图片_20251122072559_77_1274.png,,Ja Morant,Memphis Grizzlies,,,249,,,True,False,False,False,,Rookie,,,,185.0,,,27,2025-11-18 20:50:30,Sold,0.7450545454545454,False
+微信图片_20251122072600_78_1274.png,,Ja Morant,Minnesota Timberwolves,,,249,/94220,94220,True,False,False,True,Panini Silver,"Rookie, Refractor, Silver Parallel",,,,311.66,,,21,2025-11-14 20:04:21,Sold,0.7326645161290323,False
+微信图片_20251122072602_79_1274.png,,Luka Doncic,,2019-20,Panini Prizm,249,,,True,False,False,False,,Rookie,,,,625.01,,,19,,Sold,0.6195,False
+微信图片_20251122072603_80_1274.png,,Ja Morant,Minnesota Timberwolves,2019-20,Panini Prizm,,,,True,False,False,True,Panini Orange,"Rookie, Refractor, Orange Parallel",,,,9301.89,,,53,2025-11-04 21:49:00,Sold,0.6074756756756756,False
+微信图片_20251122072604_81_1274.png,,,Memphis Grizzlies,,,,,,False,False,False,False,,,,,,96.0,,,325,2025-10-26 20:50:00,Sold,0.6961791666666667,True
+微信图片_20251122072605_82_1274.png,,Ja Morant,Memphis Grizzlies,,,,,,True,False,False,False,,Rookie,,,,58.0,,,16,2025-10-26 20:49:00,Sold,0.7091875,False
+微信图片_20251122072609_83_1274.png,,Ja Morant,Minnesota Timberwolves,2019-20,Panini Prizm,249,,,True,False,False,False,Panini Silver,"Rookie, Silver Parallel",,,,433.0,,,25,2025-10-2421:40:10,Sold,0.6391428571428571,False
+微信图片_20251122072613_84_1274.png,,Ja Morant,,2019-20,Panini Prizm,249,,,True,False,False,False,Panini Silver,"Rookie, Silver Parallel",,,,2380.0,,,41,2025-10-2421:09:01,Sold,0.657934375,False
+微信图片_20251122072616_85_1274.png,,Ja Morant,Minnesota Timberwolves,,,,,,True,False,False,False,Panini Silver,"Rookie, Silver Parallel",,,,741.0,,,19,2025-10-23 20:17:30,Sold,0.613162162162162,False
+微信图片_20251122072620_86_1274.png,,Ja Morant,Minnesota Timberwolves,,,,,,True,False,False,True,,"Rookie, Refractor",,,,180.0,,,18,2025-10-2120:05:03,Sold,0.7298193548387097,False
+微信图片_20251122072624_87_1274.png,,Ja Morant,Minnesota Timberwolves,,,249,,,True,False,False,True,Panini Green,"Rookie, Refractor, Green Parallel",,,,161.88,,,24,2025-10-0720:45:00,Sold,0.748158064516129,False
+微信图片_20251122072627_88_1274.png,,Ja Morant,,,,,80/88,88,True,False,False,True,,"Rookie, Refractor",,,,2188.0,,,42,2025-10-05 21:30:00,Sold,0.6359535714285715,False
+微信图片_20251122072630_89_1274.png,,,Memphis Grizzlies,,,,,,False,False,False,False,Panini Gold,Gold Parallel,,,,8305.04,,,44,2025-09-1421:07:00,Sold,0.504253125,True
+微信图片_20251122072633_90_1274.png,,Ja Morant,,,,,,,False,False,False,True,,Refractor,,,,121.0,,,21,,Sold,0.561921212121212,True
+微信图片_20251122072634_91_1274.png,,Ja Morant,Memphis Grizzlies,2019-20,Panini Prizm,,,,True,False,False,True,,"Rookie, Refractor",,,,330.55,,,21,2025-09-09 20:31:00,Sold,0.6323432432432431,False
+微信图片_20251122072635_92_1274.png,,Ja Morant,,2019-20,Panini Prizm,,,,True,False,False,False,Panini Gold,"Rookie, Gold Parallel",,,,323.66,,,34,2025-09-0120:46:27,Sold,0.5653285714285714,True
+微信图片_20251122072637_93_1274.png,,Ja Morant,,,,,/50,50,True,False,False,True,Panini Pink,"Rookie, Refractor, Pink Parallel",,,,,249.0,,54,2025-08-16 20:00:00,Sold,0.616716129032258,False
+微信图片_20251122072925_94_1274.png,,Ja Morant,Memphis Grizzlies,2019-20,Panini Prizm,,12/75,75,True,False,False,False,Panini Purple,"Rookie, Purple Parallel",,,,8840.0,,,74,2025-07-2721:28:53,Sold,0.64,False
+微信图片_20251122072927_95_1274.png,,Ja Morant,Memphis Grizzlies,,,,,,True,True,False,True,,"Autograph, Rookie, Refractor",,,,34138.0,,,84,2025-01-26 21:00:21,Sold,0.6778352941176471,False
+微信图片_20251122072928_96_1274.png,,Ja Morant,Minnesota Timberwolves,2019-20,Panini Prizm,,/75,75,True,False,False,False,,Rookie,,,,10250.0,,,43,2025-02-16 21:15:00,Sold,0.590408108108108,True
+微信图片_20251122072929_97_1274.png,,Ja Morant,Memphis Grizzlies,,,,41/49,49,True,False,False,True,Panini Gold,"Rookie, Refractor, Gold Parallel",,,,9000.0,,,52,2025-06-0121:34:40,Sold,0.5658674418604652,True
+微信图片_20251122072931_98_1274.png,,Ja Morant,Minnesota Timberwolves,,,,99,,True,False,False,True,Panini Blue,"Rookie, Refractor, Blue Parallel",,,,8199.0,,,43,2025-01-13 21:02:32,Sold,0.6873888888888888,False
+微信图片_20251122072932_99_1274.png,,Ja Morant,Memphis Grizzlies,2019-20,Panini Prizm,,/199,199,True,False,False,True,Panini Blue,"Rookie, Refractor, Blue Parallel",,,,7777.0,,,43,2025-04-2721:00:50,Sold,0.6341255813953487,False
+微信图片_20251122072933_100_1274.png,,Ja Morant,Memphis Grizzlies,2019-20,Panini Prizm,,,,True,False,False,False,,Rookie,,,,6866.0,,,7,2025-04-10 20:00:00,Sold,0.5764868421052631,True
+微信图片_20251122072934_101_1274.png,,Ja Morant,Memphis Grizzlies,2019-20,Panini Prizm,,/199,199,True,False,False,True,Panini Blue,"Rookie, Refractor, Blue Parallel",,,,7200.0,,,45,2025-06-0121:02:20,Sold,0.6087720930232557,False
