@@ -1,0 +1,155 @@
+OCR Results for: 微信图片_20251122072928_96_1274.png
+================================================================================
+
+Text: 20:244
+Confidence: 0.1847
+Bounding Box: [[np.int32(114), np.int32(62)], [np.int32(316), np.int32(62)], [np.int32(316), np.int32(116)], [np.int32(114), np.int32(116)]]
+----------------------------------------
+Text: 令 @-
+Confidence: 0.0164
+Bounding Box: [[np.int32(920), np.int32(62)], [np.int32(1064), np.int32(62)], [np.int32(1064), np.int32(114)], [np.int32(920), np.int32(114)]]
+----------------------------------------
+Text: 商品
+Confidence: 0.9864
+Bounding Box: [[np.int32(538), np.int32(202)], [np.int32(640), np.int32(202)], [np.int32(640), np.int32(258)], [np.int32(538), np.int32(258)]]
+----------------------------------------
+Text: 2019PANINIPRIZM
+Confidence: 0.4761
+Bounding Box: [[np.int32(401), np.int32(379)], [np.int32(565), np.int32(379)], [np.int32(565), np.int32(399)], [np.int32(401), np.int32(399)]]
+----------------------------------------
+Text: #249
+Confidence: 0.2389
+Bounding Box: [[np.int32(667), np.int32(381)], [np.int32(711), np.int32(381)], [np.int32(711), np.int32(397)], [np.int32(667), np.int32(397)]]
+----------------------------------------
+Text: JA MORANT
+Confidence: 0.3462
+Bounding Box: [[np.int32(401), np.int32(397)], [np.int32(507), np.int32(397)], [np.int32(507), np.int32(415)], [np.int32(401), np.int32(415)]]
+----------------------------------------
+Text: MINT
+Confidence: 0.9147
+Bounding Box: [[np.int32(665), np.int32(397)], [np.int32(709), np.int32(397)], [np.int32(709), np.int32(413)], [np.int32(665), np.int32(413)]]
+----------------------------------------
+Text: PURPLE PRIZN
+Confidence: 0.4497
+Bounding Box: [[np.int32(401), np.int32(411)], [np.int32(525), np.int32(411)], [np.int32(525), np.int32(431)], [np.int32(401), np.int32(431)]]
+----------------------------------------
+Text: 64209652
+Confidence: 0.9779
+Bounding Box: [[np.int32(625), np.int32(425)], [np.int32(713), np.int32(425)], [np.int32(713), np.int32(445)], [np.int32(625), np.int32(445)]]
+----------------------------------------
+Text: 1e
+Confidence: 0.3218
+Bounding Box: [[np.int32(564), np.int32(626)], [np.int32(596), np.int32(626)], [np.int32(596), np.int32(652)], [np.int32(564), np.int32(652)]]
+----------------------------------------
+Text: MUAANI
+Confidence: 0.6034
+Bounding Box: [[np.int32(536), np.int32(894)], [np.int32(612), np.int32(894)], [np.int32(612), np.int32(920)], [np.int32(536), np.int32(920)]]
+----------------------------------------
+Text: 
+Confidence: 0.0000
+Bounding Box: [[np.int32(513), np.int32(929)], [np.int32(597), np.int32(929)], [np.int32(597), np.int32(945)], [np.int32(513), np.int32(945)]]
+----------------------------------------
+Text: 小柴拍卖
+Confidence: 0.2335
+Bounding Box: [[np.int32(511), np.int32(1043)], [np.int32(783), np.int32(1043)], [np.int32(783), np.int32(1107)], [np.int32(511), np.int32(1107)]]
+----------------------------------------
+Text: 拍
+Confidence: 0.9829
+Bounding Box: [[np.int32(408), np.int32(1118)], [np.int32(440), np.int32(1118)], [np.int32(440), np.int32(1142)], [np.int32(408), np.int32(1142)]]
+----------------------------------------
+Text: 耕卫海高端域屋卡
+Confidence: 0.0042
+Bounding Box: [[np.int32(533), np.int32(1117)], [np.int32(797), np.int32(1117)], [np.int32(797), np.int32(1155)], [np.int32(533), np.int32(1155)]]
+----------------------------------------
+Text: 结束时间:2025-02-16 21:15:00
+Confidence: 0.7938
+Bounding Box: [[np.int32(54), np.int32(1258)], [np.int32(632), np.int32(1258)], [np.int32(632), np.int32(1312)], [np.int32(54), np.int32(1312)]]
+----------------------------------------
+Text: 2019-20 Panini Prizm Ja Morant RC
+Confidence: 0.7394
+Bounding Box: [[np.int32(57), np.int32(1341)], [np.int32(981), np.int32(1341)], [np.int32(981), np.int32(1402)], [np.int32(57), np.int32(1402)]]
+----------------------------------------
+Text: (小小
+Confidence: 0.5400
+Bounding Box: [[np.int32(1011), np.int32(1337)], [np.int32(1097), np.int32(1337)], [np.int32(1097), np.int32(1401)], [np.int32(1011), np.int32(1401)]]
+----------------------------------------
+Text: 柴拍卖1 pz系列  贾莫兰特 人气王 紫折
+Confidence: 0.1424
+Bounding Box: [[np.int32(54), np.int32(1401)], [np.int32(986), np.int32(1401)], [np.int32(986), np.int32(1478)], [np.int32(54), np.int32(1478)]]
+----------------------------------------
+Text: 灰熊 评级卡 新秀65 /75  收藏凑套必
+Confidence: 0.5039
+Bounding Box: [[np.int32(190), np.int32(1472)], [np.int32(1076), np.int32(1472)], [np.int32(1076), np.int32(1546)], [np.int32(190), np.int32(1546)]]
+----------------------------------------
+Text: 备 WNVI
+Confidence: 0.7696
+Bounding Box: [[np.int32(59), np.int32(1549)], [np.int32(283), np.int32(1549)], [np.int32(283), np.int32(1613)], [np.int32(59), np.int32(1613)]]
+----------------------------------------
+Text: 半10,250.00
+Confidence: 0.8119
+Bounding Box: [[np.int32(50), np.int32(1636)], [np.int32(449), np.int32(1636)], [np.int32(449), np.int32(1723)], [np.int32(50), np.int32(1723)]]
+----------------------------------------
+Text: ~ $1,410.40
+Confidence: 0.7592
+Bounding Box: [[np.int32(54), np.int32(1722)], [np.int32(298), np.int32(1722)], [np.int32(298), np.int32(1772)], [np.int32(54), np.int32(1772)]]
+----------------------------------------
+Text: 怂43  次竞价
+Confidence: 0.1378
+Bounding Box: [[np.int32(58), np.int32(1786)], [np.int32(284), np.int32(1786)], [np.int32(284), np.int32(1840)], [np.int32(58), np.int32(1840)]]
+----------------------------------------
+Text: 运费: 半18.00
+Confidence: 0.5096
+Bounding Box: [[np.int32(78), np.int32(1880)], [np.int32(320), np.int32(1880)], [np.int32(320), np.int32(1928)], [np.int32(78), np.int32(1928)]]
+----------------------------------------
+Text: 商品属性
+Confidence: 0.9897
+Bounding Box: [[np.int32(56), np.int32(2010)], [np.int32(232), np.int32(2010)], [np.int32(232), np.int32(2066)], [np.int32(56), np.int32(2066)]]
+----------------------------------------
+Text: 商品编号
+Confidence: 0.9957
+Bounding Box: [[np.int32(56), np.int32(2108)], [np.int32(220), np.int32(2108)], [np.int32(220), np.int32(2160)], [np.int32(56), np.int32(2160)]]
+----------------------------------------
+Text: 250211173402847
+Confidence: 0.9847
+Bounding Box: [[np.int32(355), np.int32(2111)], [np.int32(687), np.int32(2111)], [np.int32(687), np.int32(2155)], [np.int32(355), np.int32(2155)]]
+----------------------------------------
+Text: 曾经的老卡迷
+Confidence: 0.9128
+Bounding Box: [[np.int32(239), np.int32(2267)], [np.int32(535), np.int32(2267)], [np.int32(535), np.int32(2331)], [np.int32(239), np.int32(2331)]]
+----------------------------------------
+Text: 宵
+Confidence: 0.0988
+Bounding Box: [[np.int32(904), np.int32(2290)], [np.int32(988), np.int32(2290)], [np.int32(988), np.int32(2368)], [np.int32(904), np.int32(2368)]]
+----------------------------------------
+Text: 企业商户
+Confidence: 0.9701
+Bounding Box: [[np.int32(253), np.int32(2349)], [np.int32(377), np.int32(2349)], [np.int32(377), np.int32(2389)], [np.int32(253), np.int32(2389)]]
+----------------------------------------
+Text: 好评率
+Confidence: 0.7956
+Bounding Box: [[np.int32(181), np.int32(2465)], [np.int32(289), np.int32(2465)], [np.int32(289), np.int32(2507)], [np.int32(181), np.int32(2507)]]
+----------------------------------------
+Text: 好评数
+Confidence: 0.9787
+Bounding Box: [[np.int32(533), np.int32(2465)], [np.int32(643), np.int32(2465)], [np.int32(643), np.int32(2507)], [np.int32(533), np.int32(2507)]]
+----------------------------------------
+Text: 差评数
+Confidence: 0.9771
+Bounding Box: [[np.int32(889), np.int32(2465)], [np.int32(997), np.int32(2465)], [np.int32(997), np.int32(2509)], [np.int32(889), np.int32(2509)]]
+----------------------------------------
+Text: 99.8796
+Confidence: 0.4760
+Bounding Box: [[np.int32(154), np.int32(2514)], [np.int32(316), np.int32(2514)], [np.int32(316), 2556], [np.int32(154), 2556]]
+----------------------------------------
+Text: 0Sa9
+Confidence: 0.6985
+Bounding Box: [[np.float64(54.12649295349734), np.float64(1490.2553746325905)], [np.float64(188.18775887778048), np.float64(1479.7271358001822)], [np.float64(188.87350704650265), np.float64(1539.7446253674095)], [np.float64(54.81224112221952), np.float64(1550.2728641998178)]]
+----------------------------------------
+Text: 商品己售出
+Confidence: 0.7064
+Bounding Box: [[np.float64(912.3585363632978), np.float64(1669.0343881786703)], [np.float64(1099.996057474615), np.float64(1724.7825264128378)], [np.float64(1083.6414636367022), np.float64(1773.9656118213297)], [np.float64(895.003942525385), np.float64(1718.2174735871622)]]
+----------------------------------------
+Text: 7
+Confidence: 0.0013
+Bounding Box: [[np.float64(142.2562854188427), np.float64(2308.55879958638)], [np.float64(202.47354005793142), np.float64(2298.3024725092628)], [np.float64(206.7437145811573), np.float64(2327.44120041362)], [np.float64(146.52645994206858), np.float64(2336.6975274907372)]]
+----------------------------------------

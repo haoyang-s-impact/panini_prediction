@@ -1,0 +1,75 @@
+OCR Results for: 微信图片_20251122072119_24_1274.jpg
+================================================================================
+
+Text: 08:00
+Confidence: 0.9985
+Bounding Box: [[np.int32(19), np.int32(5)], [np.int32(71), np.int32(5)], [np.int32(71), np.int32(25)], [np.int32(19), np.int32(25)]]
+----------------------------------------
+Text: 11月4日周二
+Confidence: 0.6681
+Bounding Box: [[np.int32(78), np.int32(4)], [np.int32(174), np.int32(4)], [np.int32(174), np.int32(28)], [np.int32(78), np.int32(28)]]
+----------------------------------------
+Text: 789
+Confidence: 0.7669
+Bounding Box: [[np.int32(1455), np.int32(5)], [np.int32(1495), np.int32(5)], [np.int32(1495), np.int32(25)], [np.int32(1455), np.int32(25)]]
+----------------------------------------
+Text: 商品
+Confidence: 0.9953
+Bounding Box: [[np.int32(752), np.int32(144)], [np.int32(802), np.int32(144)], [np.int32(802), np.int32(172)], [np.int32(752), np.int32(172)]]
+----------------------------------------
+Text: ~p/
+Confidence: 0.0014
+Bounding Box: [[np.int32(771), np.int32(402)], [np.int32(884), np.int32(402)], [np.int32(884), np.int32(453)], [np.int32(771), np.int32(453)]]
+----------------------------------------
+Text: LA
+Confidence: 0.9997
+Bounding Box: [[np.int32(732), np.int32(502)], [np.int32(794), np.int32(502)], [np.int32(794), np.int32(550)], [np.int32(732), np.int32(550)]]
+----------------------------------------
+Text: 结束时间:2025-01-19 21.42:00
+Confidence: 0.5960
+Bounding Box: [[np.int32(552), np.int32(590)], [np.int32(808), np.int32(590)], [np.int32(808), np.int32(614)], [np.int32(552), np.int32(614)]]
+----------------------------------------
+Text: (LA拍卖精品) 22-23 Panini One and
+Confidence: 0.3319
+Bounding Box: [[np.int32(566), np.int32(624)], [np.int32(978), np.int32(624)], [np.int32(978), np.int32(656)], [np.int32(566), np.int32(656)]]
+----------------------------------------
+Text: One Ja Morant 灰熊贾 莫兰特  横版镜面
+Confidence: 0.4840
+Bounding Box: [[np.int32(552), np.int32(654)], [np.int32(992), np.int32(654)], [np.int32(992), np.int32(686)], [np.int32(552), np.int32(686)]]
+----------------------------------------
+Text: PA 三色Patch 饱满切割 '签字卡签 金平行
+Confidence: 0.4312
+Bounding Box: [[np.int32(553), np.int32(683)], [np.int32(993), np.int32(683)], [np.int32(993), np.int32(719)], [np.int32(553), np.int32(719)]]
+----------------------------------------
+Text: 限量10编 10/10尾编  箱货Hit 原封砖  专收
+Confidence: 0.5063
+Bounding Box: [[np.int32(554), np.int32(716)], [np.int32(992), np.int32(716)], [np.int32(992), np.int32(748)], [np.int32(554), np.int32(748)]]
+----------------------------------------
+Text: 投资首选!EIOB
+Confidence: 0.5441
+Bounding Box: [[np.int32(551), np.int32(745)], [np.int32(735), np.int32(745)], [np.int32(735), np.int32(781)], [np.int32(551), np.int32(781)]]
+----------------------------------------
+Text: 半7,201.00
+Confidence: 0.9340
+Bounding Box: [[np.int32(551), np.int32(787)], [np.int32(711), np.int32(787)], [np.int32(711), np.int32(825)], [np.int32(551), np.int32(825)]]
+----------------------------------------
+Text: 百品
+Confidence: 0.0161
+Bounding Box: [[np.int32(907), np.int32(811)], [np.int32(939), np.int32(811)], [np.int32(939), np.int32(831)], [np.int32(907), np.int32(831)]]
+----------------------------------------
+Text: ~ $981.50
+Confidence: 0.9599
+Bounding Box: [[np.int32(552), np.int32(822)], [np.int32(646), np.int32(822)], [np.int32(646), np.int32(846)], [np.int32(552), np.int32(846)]]
+----------------------------------------
+Text: 己售
+Confidence: 0.2124
+Bounding Box: [[np.int32(936), np.int32(814)], [np.int32(970), np.int32(814)], [np.int32(970), np.int32(838)], [np.int32(936), np.int32(838)]]
+----------------------------------------
+Text: 冬15次竞价
+Confidence: 0.1995
+Bounding Box: [[np.int32(554), np.int32(852)], [np.int32(652), np.int32(852)], [np.int32(652), np.int32(876)], [np.int32(554), np.int32(876)]]
+----------------------------------------
+Text: 商品属性
+Confidence: 0.9955
+Bounding Box: [[np.int32(554), np.int32(950)], [np.int32(634), np.int32(950)], [np.int32(634), np.int32(974)], [np.int32(554), np.int32(974)]]
+----------------------------------------

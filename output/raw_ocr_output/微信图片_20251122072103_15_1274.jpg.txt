@@ -1,0 +1,67 @@
+OCR Results for: 微信图片_20251122072103_15_1274.jpg
+================================================================================
+
+Text: 07:57
+Confidence: 0.5900
+Bounding Box: [[np.int32(19), np.int32(5)], [np.int32(67), np.int32(5)], [np.int32(67), np.int32(25)], [np.int32(19), np.int32(25)]]
+----------------------------------------
+Text: 11月4日周二
+Confidence: 0.8215
+Bounding Box: [[np.int32(74), np.int32(4)], [np.int32(170), np.int32(4)], [np.int32(170), np.int32(28)], [np.int32(74), np.int32(28)]]
+----------------------------------------
+Text: 789
+Confidence: 0.8828
+Bounding Box: [[np.int32(1455), np.int32(5)], [np.int32(1495), np.int32(5)], [np.int32(1495), np.int32(25)], [np.int32(1455), np.int32(25)]]
+----------------------------------------
+Text: 商品
+Confidence: 0.9975
+Bounding Box: [[np.int32(752), np.int32(142)], [np.int32(802), np.int32(142)], [np.int32(802), np.int32(172)], [np.int32(752), np.int32(172)]]
+----------------------------------------
+Text: 60
+Confidence: 0.6311
+Bounding Box: [[np.int32(920), np.int32(144)], [np.int32(948), np.int32(144)], [np.int32(948), np.int32(168)], [np.int32(920), np.int32(168)]]
+----------------------------------------
+Text: 4536
+Confidence: 0.0014
+Bounding Box: [[np.int32(770), np.int32(244)], [np.int32(796), np.int32(244)], [np.int32(796), np.int32(250)], [np.int32(770), np.int32(250)]]
+----------------------------------------
+Text: 结束时间:2025-10-2020.35:00
+Confidence: 0.6332
+Bounding Box: [[np.int32(552), np.int32(590)], [np.int32(814), np.int32(590)], [np.int32(814), np.int32(614)], [np.int32(552), np.int32(614)]]
+----------------------------------------
+Text: 2019-20 Panini One and One Ja
+Confidence: 0.6718
+Bounding Box: [[np.int32(554), np.int32(626)], [np.int32(914), np.int32(626)], [np.int32(914), np.int32(652)], [np.int32(554), np.int32(652)]]
+----------------------------------------
+Text: Morant RC 元年箱货大HIT 灰熊超巨 莫
+Confidence: 0.6797
+Bounding Box: [[np.int32(555), np.int32(652)], [np.int32(981), np.int32(652)], [np.int32(981), np.int32(689)], [np.int32(555), np.int32(689)]]
+----------------------------------------
+Text: 兰特  49编  正新秀 RPA 签字 卡签蓝平行
+Confidence: 0.5936
+Bounding Box: [[np.int32(553), np.int32(681)], [np.int32(991), np.int32(681)], [np.int32(991), np.int32(720)], [np.int32(553), np.int32(720)]]
+----------------------------------------
+Text: 双窗暴力球衣patch PSA9分
+Confidence: 0.4233
+Bounding Box: [[np.int32(553), np.int32(715)], [np.int32(855), np.int32(715)], [np.int32(855), np.int32(751)], [np.int32(553), np.int32(751)]]
+----------------------------------------
+Text: 半6,535.00
+Confidence: 0.8538
+Bounding Box: [[np.int32(551), np.int32(757)], [np.int32(711), np.int32(757)], [np.int32(711), np.int32(795)], [np.int32(551), np.int32(795)]]
+----------------------------------------
+Text: ~ $933.85
+Confidence: 0.5483
+Bounding Box: [[np.int32(555), np.int32(793)], [np.int32(645), np.int32(793)], [np.int32(645), np.int32(813)], [np.int32(555), np.int32(813)]]
+----------------------------------------
+Text: 《67  次竞价
+Confidence: 0.0672
+Bounding Box: [[np.int32(554), np.int32(820)], [np.int32(654), np.int32(820)], [np.int32(654), np.int32(844)], [np.int32(554), np.int32(844)]]
+----------------------------------------
+Text: 竞价记录 (67)
+Confidence: 0.8430
+Bounding Box: [[np.int32(554), np.int32(918)], [np.int32(674), np.int32(918)], [np.int32(674), np.int32(946)], [np.int32(554), np.int32(946)]]
+----------------------------------------
+Text: 商品已售出
+Confidence: 0.7100
+Bounding Box: [[np.float64(904.3051384180819), np.float64(769.0815813559439)], [np.float64(991.0), np.float64(793.0)], [np.float64(982.6948615819181), np.float64(816.9184186440561)], [np.float64(897.0), np.float64(793.0)]]
+----------------------------------------
