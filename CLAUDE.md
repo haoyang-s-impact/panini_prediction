@@ -23,9 +23,16 @@ python panini_card_ocr_etl.py
 python test_extractors.py
 
 # Train price prediction models (reads output/panini_cards_extracted.csv)
-python train_price_regressor.py      # V1: boolean + numeric features only
-python train_price_regressor_v2.py   # V2: adds categorical features (native XGBoost)
-python train_price_regressor_v3.py   # V3: adds RandomizedSearchCV hyperparameter tuning
+python models/train_price_regressor.py      # V1: boolean + numeric features only
+python models/train_price_regressor_v2.py   # V2: adds categorical features (native XGBoost)
+python models/train_price_regressor_v3.py   # V3: adds RandomizedSearchCV hyperparameter tuning
+python models/train_price_regressor_v4.py   # V4: derived features + log-transformed target
+
+# Run model comparison report (trains all versions, generates plots)
+python models/model_comparison_report.py    # Outputs PNGs to output/
+
+# Run price skewness analysis
+python models/analyze_price_skewness.py     # Outputs PNG to output/
 ```
 
 ## Architecture
@@ -44,14 +51,24 @@ The pipeline has three stages:
 - Uses spatial zones (Y-coordinate ranges) and confidence thresholds for position-based extraction
 - Fuzzy-matches player names against `data/nba_players.py` using `rapidfuzz` (threshold: 85)
 - Maps Chinese text to English (player names, team names, parallel colors, descriptors)
-- Outputs: `output/panini_cards_extracted.csv` with ~25 columns (player, team, card series, grading, prices, boolean flags)
+- Outputs: `output/panini_cards_extracted.csv` with ~37 columns (player, team, card series, grading, prices, boolean flags, derived features)
+- `compute_derived_features()` adds 11 derived columns: player_tier, rarity_ratio, rookie_auto, rookie_patch, is_rpa, is_numbered, is_1of1, is_base, day_of_week, hour_of_day, is_weekend
 
-**Stage 3: ML** (`train_price_regressor.py`, `_v2.py`, `_v3.py`)
+**Stage 3: ML** (`models/train_price_regressor.py`, `_v2.py`, `_v3.py`, `_v4.py`)
 - Target: `price_cny` (Chinese Yuan sale price)
 - V1: 6 features (boolean flags + serial_max + grade), baseline XGBoost
 - V2: 13 features (adds player_name, team, card_series, etc. as native categoricals)
 - V3: Same features as V2 + RandomizedSearchCV over 20 iterations with 3-fold CV
+- V4: 24 features (V3 + 11 derived), log-transformed target, fixed card_year parsing, NaN-aware numerics
 - All versions run 10 random-seed trials and report average MAE/RMSE/R2
+
+**Model Comparison** (`models/model_comparison_report.py`)
+- VS Code interactive report (`# %%` cells) that trains all 4 versions + ablation variants
+- Generates: `output/price_distribution_log_transform.png`, `output/model_version_comparison.png`, `output/log_transform_ablation.png`, `output/feature_importance_comparison.png`
+
+**Price Analysis** (`models/analyze_price_skewness.py`)
+- Visualizes price distribution skewness with histograms, box plots, and Q-Q plots
+- Generates: `output/price_skewness_analysis.png`
 
 ## Key Data Module
 
@@ -61,10 +78,19 @@ The pipeline has three stages:
 - `TEAM_MAPPINGS`: Chinese/English/abbreviation → full team names
 - `PARALLEL_MAPPINGS`: Chinese color terms → English (e.g., "银折" → "Silver")
 - `DESCRIPTOR_KEYWORDS`: Regex patterns for card attributes (autograph, rookie, patch, refractor, RPA)
+- `PLAYER_TIERS`: ~80 player names → 4 tiers (superstar/star/starter/rotation) for price modeling
 
 ## OCR Text Conventions
 
 The raw OCR data uses `半` (misread of `¥`) for CNY prices and contains mixed Chinese/English text. The `extract_price()` function in `panini_card_ocr_etl.py` handles this mapping. Shipping prices are distinguished by the presence of `运费` in the same text line.
+
+## Documentation
+
+`docs/` contains project documentation:
+- `docs/ROADMAP.md` — feature roadmap and next steps
+- `docs/FEATURE_EXTRACTION_README.md` — detailed feature extraction documentation
+- `docs/session1_retrospective.md` — Session 1 retrospective (model iteration learnings)
+- `docs/vectorized-floating-aurora.md` — additional notes
 
 ## File Format Notes
 

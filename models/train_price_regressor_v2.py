@@ -2,11 +2,14 @@
 XGBoost regressor V2: More features with native categorical support.
 """
 
+from pathlib import Path
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from xgboost import XGBRegressor
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
 def load_and_prepare_data(csv_path: str):
@@ -92,7 +95,7 @@ def show_feature_importance(model, feature_names):
 
 
 def main():
-    csv_path = "output/panini_cards_extracted.csv"
+    csv_path = str(PROJECT_ROOT / "output/panini_cards_extracted.csv")
 
     print("Loading data...")
     X, y = load_and_prepare_data(csv_path)

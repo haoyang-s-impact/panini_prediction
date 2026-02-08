@@ -19,7 +19,8 @@ from data.nba_players import (
     CHINESE_NAME_MAP,
     TEAM_MAPPINGS,
     PARALLEL_MAPPINGS,
-    DESCRIPTOR_KEYWORDS
+    DESCRIPTOR_KEYWORDS,
+    PLAYER_TIERS
 )
 
 # %% [markdown]
@@ -551,6 +552,67 @@ def aggregate_card_features(df):
 
     return output_df
 
+
+def compute_derived_features(df):
+    """
+    Add derived features for ML modeling.
+
+    Takes the wide-format cards DataFrame (one row per card) and adds 11
+    derived columns: player_tier, rarity_ratio, rookie_auto, rookie_patch,
+    is_rpa, is_numbered, is_1of1, is_base, day_of_week, hour_of_day, is_weekend.
+    """
+    # --- Player tier ---
+    df['player_tier'] = df['player_name'].apply(
+        lambda x: PLAYER_TIERS.get(x, 'rotation') if pd.notna(x) else 'unknown'
+    ).astype('category')
+
+    # --- Rarity ratio (1 / serial_max) ---
+    serial_max_numeric = pd.to_numeric(df['serial_max'], errors='coerce')
+    df['rarity_ratio'] = (1.0 / serial_max_numeric).astype('Float64')
+
+    # --- Interaction flags ---
+    df['rookie_auto'] = (df['is_rookie'].fillna(False) & df['is_autograph'].fillna(False)).astype('boolean')
+    df['rookie_patch'] = (df['is_rookie'].fillna(False) & df['has_patch'].fillna(False)).astype('boolean')
+
+    # --- RPA from card_features string ---
+    df['is_rpa'] = df['card_features'].fillna('').str.contains('RPA', case=False, regex=False).astype('boolean')
+
+    # --- Numbered / 1-of-1 / base ---
+    df['is_numbered'] = (serial_max_numeric < 100).astype('boolean')
+    df['is_1of1'] = (serial_max_numeric == 1).astype('boolean')
+
+    # is_base: all special flags False AND no parallel AND no serial
+    special_flags = (
+        df['is_rookie'].fillna(False)
+        | df['is_autograph'].fillna(False)
+        | df['has_patch'].fillna(False)
+        | df['is_refractor'].fillna(False)
+    )
+    has_parallel = df['parallel_type'].notna()
+    has_serial = serial_max_numeric.notna()
+    df['is_base'] = (~special_flags & ~has_parallel & ~has_serial).astype('boolean')
+
+    # --- Temporal features from end_time ---
+    def _parse_end_time(t):
+        """Parse end_time, fixing missing space between date and time."""
+        if pd.isna(t):
+            return pd.NaT
+        t = str(t).strip()
+        # Fix format like "2024-12-2021:34:02" → "2024-12-20 21:34:02"
+        t = re.sub(r'(\d{4}-\d{2}-\d{2})(\d{2}:\d{2}:\d{2})', r'\1 \2', t)
+        try:
+            return pd.to_datetime(t)
+        except Exception:
+            return pd.NaT
+
+    parsed_time = df['end_time'].apply(_parse_end_time)
+    df['day_of_week'] = parsed_time.dt.dayofweek.astype('Int64')   # 0=Mon..6=Sun
+    df['hour_of_day'] = parsed_time.dt.hour.astype('Int64')
+    df['is_weekend'] = df['day_of_week'].isin([5, 6]).astype('boolean')
+
+    return df
+
+
 # %% [markdown]
 # ## Extract Target Variables (Legacy - for reference)
 
@@ -601,6 +663,11 @@ print("\nAggregating features per card...")
 cards_df = aggregate_card_features(df)
 print(f"Extracted features for {len(cards_df)} cards")
 
+# Compute derived features
+print("\nComputing derived features...")
+cards_df = compute_derived_features(cards_df)
+print(f"Total columns after derived features: {len(cards_df.columns)}")
+
 # %% [markdown]
 # ## Feature Extraction Results
 
@@ -629,6 +696,17 @@ print(f"  Parallels: {cards_df['parallel_type'].notna().sum()} ({cards_df['paral
 print(f"\nData quality:")
 print(f"  Average OCR confidence: {cards_df['ocr_avg_confidence'].mean():.3f}")
 print(f"  Cards needing review: {cards_df['needs_review'].sum()} ({cards_df['needs_review'].sum()/len(cards_df)*100:.1f}%)")
+print(f"\nDerived features:")
+print(f"  Player tiers: {cards_df['player_tier'].value_counts().to_dict()}")
+print(f"  Rarity ratio populated: {cards_df['rarity_ratio'].notna().sum()} ({cards_df['rarity_ratio'].notna().sum()/len(cards_df)*100:.1f}%)")
+print(f"  Rookie+Auto combos: {cards_df['rookie_auto'].sum()} ({cards_df['rookie_auto'].sum()/len(cards_df)*100:.1f}%)")
+print(f"  Rookie+Patch combos: {cards_df['rookie_patch'].sum()} ({cards_df['rookie_patch'].sum()/len(cards_df)*100:.1f}%)")
+print(f"  RPA cards: {cards_df['is_rpa'].sum()} ({cards_df['is_rpa'].sum()/len(cards_df)*100:.1f}%)")
+print(f"  Numbered (<100): {cards_df['is_numbered'].sum()} ({cards_df['is_numbered'].sum()/len(cards_df)*100:.1f}%)")
+print(f"  1-of-1 cards: {cards_df['is_1of1'].sum()} ({cards_df['is_1of1'].sum()/len(cards_df)*100:.1f}%)")
+print(f"  Base cards: {cards_df['is_base'].sum()} ({cards_df['is_base'].sum()/len(cards_df)*100:.1f}%)")
+print(f"  End time parsed: {cards_df['day_of_week'].notna().sum()} ({cards_df['day_of_week'].notna().sum()/len(cards_df)*100:.1f}%)")
+print(f"  Weekend sales: {cards_df['is_weekend'].sum()} ({cards_df['is_weekend'].sum()/len(cards_df)*100:.1f}%)")
 print("="*60)
 
 # %%
