@@ -33,6 +33,12 @@ python models/model_comparison_report.py    # Outputs PNGs to output/
 
 # Run price skewness analysis
 python models/analyze_price_skewness.py     # Outputs PNG to output/
+
+# Extract image embeddings (pics/ → output/image_embeddings_pca{30,50,64}.csv)
+python data/extract_image_embeddings.py
+
+# Verify embedding quality (generates PCA, t-SNE, similarity plots)
+python analysis/verify_embeddings.py        # Outputs PNGs to output/
 ```
 
 ## Architecture
@@ -53,6 +59,14 @@ The pipeline has three stages:
 - Maps Chinese text to English (player names, team names, parallel colors, descriptors)
 - Outputs: `output/panini_cards_extracted.csv` with ~37 columns (player, team, card series, grading, prices, boolean flags, derived features)
 - `compute_derived_features()` adds 11 derived columns: player_tier, rarity_ratio, rookie_auto, rookie_patch, is_rpa, is_numbered, is_1of1, is_base, day_of_week, hour_of_day, is_weekend
+
+**Stage 2.5: Image Embeddings** (`data/extract_image_embeddings.py`)
+- Loads card auction screenshots from `pics/`
+- Preprocesses to 224x224 with ImageNet normalization (Resize(256) + CenterCrop(224))
+- Passes through frozen pretrained ResNet50 (avgpool → 2048-d feature vectors)
+- Applies StandardScaler + PCA to reduce dimensions
+- Outputs three variants for overfitting comparison: `output/image_embeddings_pca{30,50,64}.csv`
+- Verification: `analysis/verify_embeddings.py` generates PCA variance, t-SNE, and cosine similarity plots
 
 **Stage 3: ML** (`models/train_price_regressor.py`, `_v2.py`, `_v3.py`, `_v4.py`)
 - Target: `price_cny` (Chinese Yuan sale price)
@@ -90,6 +104,8 @@ The raw OCR data uses `半` (misread of `¥`) for CNY prices and contains mixed 
 - `docs/ROADMAP.md` — feature roadmap and next steps
 - `docs/FEATURE_EXTRACTION_README.md` — detailed feature extraction documentation
 - `docs/session1_retrospective.md` — Session 1 retrospective (model iteration learnings)
+- `docs/session2_retrospective.md` — Session 2 retrospective (image embeddings)
+- `docs/codebase_knowledge.md` — codebase inventory, dataset profile, model results (read this to skip re-exploration). **If the actual folder structure or file inventory differs from what this file describes, update it before proceeding.**
 - `docs/vectorized-floating-aurora.md` — additional notes
 
 ## File Format Notes
