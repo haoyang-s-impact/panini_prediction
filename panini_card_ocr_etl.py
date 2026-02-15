@@ -406,11 +406,6 @@ def load_ocr_data(directory="output/raw_ocr_output"):
 
     return pd.DataFrame(data)
 
-# %%
-# Load the data
-df = load_ocr_data()
-print(f"Loaded {len(df)} OCR entries from {df['image'].nunique()} images")
-
 # %% [markdown]
 # ## Aggregation Function
 
@@ -655,92 +650,6 @@ def extract_bid_times(text):
     return None
 
 # %% [markdown]
-# ## Aggregate Features Per Card
-
-# %%
-# Aggregate features per card image
-print("\nAggregating features per card...")
-cards_df = aggregate_card_features(df)
-print(f"Extracted features for {len(cards_df)} cards")
-
-# Compute derived features
-print("\nComputing derived features...")
-cards_df = compute_derived_features(cards_df)
-print(f"Total columns after derived features: {len(cards_df.columns)}")
-
-# %% [markdown]
-# ## Feature Extraction Results
-
-# %%
-# Show extraction statistics
-print("\n" + "="*60)
-print("FEATURE EXTRACTION SUMMARY")
-print("="*60)
-print(f"Total cards processed: {len(cards_df)}")
-print(f"\nFeature completeness:")
-print(f"  Player names found: {cards_df['player_name'].notna().sum()} ({cards_df['player_name'].notna().sum()/len(cards_df)*100:.1f}%)")
-print(f"  Card series found: {cards_df['card_series'].notna().sum()} ({cards_df['card_series'].notna().sum()/len(cards_df)*100:.1f}%)")
-print(f"  Team names found: {cards_df['team'].notna().sum()} ({cards_df['team'].notna().sum()/len(cards_df)*100:.1f}%)")
-print(f"  CNY prices found: {cards_df['price_cny'].notna().sum()} ({cards_df['price_cny'].notna().sum()/len(cards_df)*100:.1f}%)")
-print(f"  USD prices found: {cards_df['price_usd'].notna().sum()} ({cards_df['price_usd'].notna().sum()/len(cards_df)*100:.1f}%)")
-print(f"  Shipping prices found: {cards_df['shipping_price'].notna().sum()} ({cards_df['shipping_price'].notna().sum()/len(cards_df)*100:.1f}%)")
-print(f"  Bid times found: {cards_df['bid_times'].notna().sum()} ({cards_df['bid_times'].notna().sum()/len(cards_df)*100:.1f}%)")
-print(f"  Serial numbers found: {cards_df['serial_number'].notna().sum()} ({cards_df['serial_number'].notna().sum()/len(cards_df)*100:.1f}%)")
-print(f"  Graded cards found: {cards_df['grading_company'].notna().sum()} ({cards_df['grading_company'].notna().sum()/len(cards_df)*100:.1f}%)")
-print(f"\nCard features:")
-print(f"  Rookie cards: {cards_df['is_rookie'].sum()} ({cards_df['is_rookie'].sum()/len(cards_df)*100:.1f}%)")
-print(f"  Autographs: {cards_df['is_autograph'].sum()} ({cards_df['is_autograph'].sum()/len(cards_df)*100:.1f}%)")
-print(f"  Patches: {cards_df['has_patch'].sum()} ({cards_df['has_patch'].sum()/len(cards_df)*100:.1f}%)")
-print(f"  Refractors: {cards_df['is_refractor'].sum()} ({cards_df['is_refractor'].sum()/len(cards_df)*100:.1f}%)")
-print(f"  Parallels: {cards_df['parallel_type'].notna().sum()} ({cards_df['parallel_type'].notna().sum()/len(cards_df)*100:.1f}%)")
-print(f"\nData quality:")
-print(f"  Average OCR confidence: {cards_df['ocr_avg_confidence'].mean():.3f}")
-print(f"  Cards needing review: {cards_df['needs_review'].sum()} ({cards_df['needs_review'].sum()/len(cards_df)*100:.1f}%)")
-print(f"\nDerived features:")
-print(f"  Player tiers: {cards_df['player_tier'].value_counts().to_dict()}")
-print(f"  Rarity ratio populated: {cards_df['rarity_ratio'].notna().sum()} ({cards_df['rarity_ratio'].notna().sum()/len(cards_df)*100:.1f}%)")
-print(f"  Rookie+Auto combos: {cards_df['rookie_auto'].sum()} ({cards_df['rookie_auto'].sum()/len(cards_df)*100:.1f}%)")
-print(f"  Rookie+Patch combos: {cards_df['rookie_patch'].sum()} ({cards_df['rookie_patch'].sum()/len(cards_df)*100:.1f}%)")
-print(f"  RPA cards: {cards_df['is_rpa'].sum()} ({cards_df['is_rpa'].sum()/len(cards_df)*100:.1f}%)")
-print(f"  Numbered (<100): {cards_df['is_numbered'].sum()} ({cards_df['is_numbered'].sum()/len(cards_df)*100:.1f}%)")
-print(f"  1-of-1 cards: {cards_df['is_1of1'].sum()} ({cards_df['is_1of1'].sum()/len(cards_df)*100:.1f}%)")
-print(f"  Base cards: {cards_df['is_base'].sum()} ({cards_df['is_base'].sum()/len(cards_df)*100:.1f}%)")
-print(f"  End time parsed: {cards_df['day_of_week'].notna().sum()} ({cards_df['day_of_week'].notna().sum()/len(cards_df)*100:.1f}%)")
-print(f"  Weekend sales: {cards_df['is_weekend'].sum()} ({cards_df['is_weekend'].sum()/len(cards_df)*100:.1f}%)")
-print("="*60)
-
-# %%
-# View sample extracted cards
-print("\nSample extracted card data:")
-display_cols = ['player_name', 'card_year', 'card_series', 'team', 'is_rookie', 'is_autograph',
-                'parallel_type', 'grade', 'price_cny', 'bid_times']
-cards_df[display_cols].head(10)
-
-# %%
-# View cards with player names
-player_cards = cards_df[cards_df['player_name'].notna()][['image', 'player_name', 'team', 'card_year', 'card_series', 'card_features', 'price_cny']]
-print(f"\nCards with player names ({len(player_cards)} cards):")
-player_cards.head(15)
-
-# %%
-# View rookie cards
-rookie_cards = cards_df[cards_df['is_rookie'] == True][['image', 'player_name', 'card_series', 'serial_number', 'is_autograph', 'has_patch', 'price_cny']]
-print(f"\nRookie cards ({len(rookie_cards)} cards):")
-rookie_cards
-
-# %%
-# View graded cards
-graded_cards = cards_df[cards_df['grading_company'].notna()][['image', 'player_name', 'grading_company', 'grade', 'card_series', 'price_cny']]
-print(f"\nGraded cards ({len(graded_cards)} cards):")
-graded_cards
-
-# %%
-# View cards needing manual review
-review_cards = cards_df[cards_df['needs_review'] == True][['image', 'player_name', 'card_series', 'price_cny', 'ocr_avg_confidence', 'needs_review']]
-print(f"\nCards needing manual review ({len(review_cards)} cards):")
-review_cards.head(20)
-
-# %% [markdown]
 # ## Data Quality Report
 
 # %%
@@ -764,58 +673,67 @@ def generate_quality_report(cards_df):
 
     return report
 
-# Generate quality report
-quality_report = generate_quality_report(cards_df)
-
-# Create quality report DataFrame
-quality_df = pd.DataFrame([
-    {'field': k, 'count': v['count'], 'percentage': v['percentage']}
-    for k, v in quality_report['completeness'].items()
-]).sort_values('percentage', ascending=False)
-
-print("\nData Quality Report:")
-print(quality_df.to_string(index=False))
 
 # %% [markdown]
-# ## Export Data
+# ## Main Execution (run interactively or via __main__)
 
 # %%
-# Save main card data to CSV
-output_file = 'output/panini_cards_extracted.csv'
-cards_df.to_csv(output_file, index=False)
-print(f"\n✓ Saved extracted card data to {output_file}")
-print(f"  Total cards: {len(cards_df)}")
-print(f"  Total columns: {len(cards_df.columns)}")
+if __name__ == "__main__":
+    # Load the data
+    df = load_ocr_data()
+    print(f"Loaded {len(df)} OCR entries from {df['image'].nunique()} images")
 
-# %%
-# Save to JSON
-json_file = 'output/panini_cards_extracted.json'
-cards_df.to_json(json_file, orient='records', force_ascii=False, indent=2)
-print(f"✓ Saved to {json_file}")
+    # Aggregate features per card image
+    print("\nAggregating features per card...")
+    cards_df = aggregate_card_features(df)
+    print(f"Extracted features for {len(cards_df)} cards")
 
-# %%
-# Save quality report
-quality_report_file = 'output/ocr_quality_report.csv'
-quality_df.to_csv(quality_report_file, index=False)
-print(f"✓ Saved quality report to {quality_report_file}")
+    # Compute derived features
+    print("\nComputing derived features...")
+    cards_df = compute_derived_features(cards_df)
+    print(f"Total columns after derived features: {len(cards_df.columns)}")
 
-# %%
-# Save cards needing review
-review_file = 'output/cards_needing_review.csv'
-review_cards = cards_df[cards_df['needs_review'] == True]
-review_cards.to_csv(review_file, index=False)
-print(f"✓ Saved {len(review_cards)} cards needing review to {review_file}")
+    # Show extraction statistics
+    print("\n" + "="*60)
+    print("FEATURE EXTRACTION SUMMARY")
+    print("="*60)
+    print(f"Total cards processed: {len(cards_df)}")
+    print(f"\nFeature completeness:")
+    print(f"  Player names found: {cards_df['player_name'].notna().sum()} ({cards_df['player_name'].notna().sum()/len(cards_df)*100:.1f}%)")
+    print(f"  Card series found: {cards_df['card_series'].notna().sum()} ({cards_df['card_series'].notna().sum()/len(cards_df)*100:.1f}%)")
+    print(f"  Team names found: {cards_df['team'].notna().sum()} ({cards_df['team'].notna().sum()/len(cards_df)*100:.1f}%)")
+    print(f"  CNY prices found: {cards_df['price_cny'].notna().sum()} ({cards_df['price_cny'].notna().sum()/len(cards_df)*100:.1f}%)")
+    print(f"  Serial numbers found: {cards_df['serial_number'].notna().sum()} ({cards_df['serial_number'].notna().sum()/len(cards_df)*100:.1f}%)")
+    print(f"  Graded cards found: {cards_df['grading_company'].notna().sum()} ({cards_df['grading_company'].notna().sum()/len(cards_df)*100:.1f}%)")
+    print(f"\nCard features:")
+    print(f"  Rookie cards: {cards_df['is_rookie'].sum()}")
+    print(f"  Autographs: {cards_df['is_autograph'].sum()}")
+    print(f"  Patches: {cards_df['has_patch'].sum()}")
+    print(f"\nData quality:")
+    print(f"  Average OCR confidence: {cards_df['ocr_avg_confidence'].mean():.3f}")
+    print(f"  Cards needing review: {cards_df['needs_review'].sum()}")
+    print("="*60)
 
-# %%
-# Export summary statistics
-print("\n" + "="*60)
-print("EXPORT SUMMARY")
-print("="*60)
-print(f"Main data:        {output_file}")
-print(f"JSON format:      {json_file}")
-print(f"Quality report:   {quality_report_file}")
-print(f"Review queue:     {review_file}")
-print(f"\nTop features by completeness:")
-for idx, row in quality_df.head(10).iterrows():
-    print(f"  {row['field']:20s} {row['percentage']:5.1f}% ({row['count']:3d} cards)")
-print("="*60)
+    # Generate quality report
+    quality_report = generate_quality_report(cards_df)
+    quality_df = pd.DataFrame([
+        {'field': k, 'count': v['count'], 'percentage': v['percentage']}
+        for k, v in quality_report['completeness'].items()
+    ]).sort_values('percentage', ascending=False)
+
+    # Save main card data to CSV
+    output_file = 'output/panini_cards_extracted.csv'
+    cards_df.to_csv(output_file, index=False)
+    print(f"\n✓ Saved extracted card data to {output_file}")
+    print(f"  Total cards: {len(cards_df)}")
+    print(f"  Total columns: {len(cards_df.columns)}")
+
+    # Save to JSON
+    json_file = 'output/panini_cards_extracted.json'
+    cards_df.to_json(json_file, orient='records', force_ascii=False, indent=2)
+    print(f"✓ Saved to {json_file}")
+
+    # Save quality report
+    quality_report_file = 'output/ocr_quality_report.csv'
+    quality_df.to_csv(quality_report_file, index=False)
+    print(f"✓ Saved quality report to {quality_report_file}")

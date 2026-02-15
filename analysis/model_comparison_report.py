@@ -17,7 +17,7 @@ from xgboost import XGBRegressor
 import os
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(PROJECT_ROOT / 'models'))
 
 os.makedirs(str(PROJECT_ROOT / 'output'), exist_ok=True)
 

@@ -2,7 +2,7 @@
 
 Quick-reference for Claude sessions. Eliminates the need to re-explore the codebase from scratch each time.
 
-Last updated: Session 2 (2026-02-14)
+Last updated: Session 3 (2026-02-14)
 
 ---
 
@@ -12,9 +12,11 @@ Last updated: Session 2 (2026-02-14)
 panini_prediction/
 ├── CLAUDE.md                              # Project instructions for Claude Code
 ├── requirements.txt                       # Python dependencies
+├── .env.example                           # API key template (ANTHROPIC_API_KEY)
+├── app.py                                 # Stage 4: Streamlit web app frontend
 ├── panini_card_extractor_interactive.py   # Stage 1: EasyOCR extraction
 ├── extract_panini_info.py                 # Stage 1: PaddleOCR extraction (original)
-├── panini_card_ocr_etl.py                 # Stage 2: Feature extraction ETL
+├── panini_card_ocr_etl.py                 # Stage 2: Feature extraction ETL (importable)
 ├── test_extractors.py                     # Unit tests for feature extractors
 ├── data/
 │   ├── nba_players.py                     # Domain knowledge (players, teams, tiers, mappings)
@@ -24,15 +26,25 @@ panini_prediction/
 │   ├── train_price_regressor_v2.py        # V2: 13 features + categoricals
 │   ├── train_price_regressor_v3.py        # V3: V2 + RandomizedSearchCV
 │   ├── train_price_regressor_v4.py        # V4: 24 features + derived + log target
+│   ├── train_production_model.py          # Stage 4: Train V4 on all data, save to disk
+│   └── saved/                             # Model artifacts (gitignored)
+│       ├── model.joblib                   # Serialized XGBoost model (525KB)
+│       └── metadata.json                  # Feature schema, hyperparams, pipeline_type
+├── serve/
+│   ├── __init__.py                        # Package init
+│   ├── model_registry.py                  # Serving-only: load_model() from disk
+│   ├── inference.py                       # predict_from_image(): OCR → features → predict
+│   └── claude_reasoning.py                # Claude API analysis (Haiku 4.5, optional)
+├── analysis/
+│   ├── verify_embeddings.py               # Embedding verification: PCA, t-SNE, similarity
 │   ├── model_comparison_report.py         # Interactive report: all versions + ablation
 │   └── analyze_price_skewness.py          # Price distribution visualization
-├── analysis/
-│   └── verify_embeddings.py               # Embedding verification: PCA, t-SNE, similarity
 ├── docs/
 │   ├── ROADMAP.md                         # 5-session feature roadmap
 │   ├── FEATURE_EXTRACTION_README.md       # Feature extraction documentation
 │   ├── session1_retrospective.md          # Session 1 learnings
 │   ├── session2_retrospective.md          # Session 2 learnings
+│   ├── SERVING_README.md                  # Web app serving architecture & design decisions
 │   └── codebase_knowledge.md              # This file
 ├── pics/                                  # 97 source images (auction screenshots)
 ├── output/                                # All generated artifacts
@@ -93,6 +105,34 @@ panini_prediction/
 | `extract_all_embeddings()` | Loop 97 images → 2048-d vectors |
 | `reduce_dimensions()` | StandardScaler → PCA(64), slice for 30/50 variants |
 | `save_embeddings_csv()` | Save per-variant CSV with `image, emb_0, ..., emb_N` |
+
+### `models/train_production_model.py` (Production Training)
+| Function | Purpose |
+|----------|---------|
+| `train_and_save()` | Train V4 on ALL data (no hold-out), save `model.joblib` + `metadata.json` to `models/saved/` |
+
+Entry point: `python -m models.train_production_model` (train) or `--info` (show metadata).
+
+### `serve/model_registry.py` (Serving-Only)
+| Function | Purpose |
+|----------|---------|
+| `load_model()` | Load `model.joblib` + `metadata.json` from disk, return `(model, metadata)` tuple |
+
+No training code — clean separation for future MLflow integration.
+
+### `serve/inference.py` (Single-Image Prediction)
+| Function | Purpose |
+|----------|---------|
+| `predict_from_image(image_bytes)` | Full pipeline: image bytes → OCR → features → price prediction |
+| `_get_ocr_reader()` | Lazy singleton EasyOCR reader (auto-detects GPU) |
+| `_run_ocr(image_bytes)` | Run EasyOCR on image, return `[{text, confidence, bbox}]` |
+| `_extract_features_from_ocr(ocr_lines)` | Convert OCR output to V4 feature dict |
+| `_features_to_dataframe(features, metadata)` | Apply V4 preprocessing, return single-row DataFrame |
+
+### `serve/claude_reasoning.py` (LLM Analysis)
+| Function | Purpose |
+|----------|---------|
+| `get_analysis(prediction)` | Call Claude Haiku 4.5 for natural language card analysis. Returns `None` if no API key. |
 
 ### `models/train_price_regressor_v4.py` (Best Model)
 | Key Detail | Value |
@@ -228,6 +268,10 @@ panini_prediction/
 | rapidfuzz | 3.14.3 | Fuzzy string matching |
 | pillow | 12.0.0 | Image loading |
 | openpyxl | 3.1.5 | Excel export |
+| streamlit | - | Web app frontend |
+| anthropic | - | Claude API for reasoning |
+| python-dotenv | - | Load `.env` for API keys |
+| joblib | - | Model serialization |
 
 Python: 3.12.3 | venv at `.venv/bin/activate`
 
