@@ -30,6 +30,10 @@ from data.panini_card_ocr_etl import (
 )
 from serve.model_registry import load_model
 
+# Default model ID — None means use registry active model.
+# Can be overridden by callers (e.g., app.py --model).
+MODEL_ID = None
+
 # Lazy-loaded singleton for EasyOCR reader
 _ocr_reader = None
 
@@ -199,12 +203,15 @@ def predict_from_image(image_bytes: bytes) -> dict:
     features = _extract_features_from_ocr(ocr_lines)
 
     # 3. Load model and prepare features
-    model, metadata = load_model()
+    model, metadata = load_model(MODEL_ID)
     X = _features_to_dataframe(features, metadata)
 
-    # 4. Predict (model was trained on log1p target)
-    y_log_pred = model.predict(X)
-    price_pred = float(np.expm1(y_log_pred[0]))
+    # 4. Predict — apply inverse transform based on metadata
+    raw_pred = model.predict(X)
+    if metadata.get("target_transform") == "log1p":
+        price_pred = float(np.expm1(raw_pred[0]))
+    else:
+        price_pred = float(raw_pred[0])
     price_pred = max(price_pred, 0.0)
 
     # 5. Build human-readable features for display

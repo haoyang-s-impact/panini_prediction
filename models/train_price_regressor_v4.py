@@ -179,7 +179,7 @@ def show_feature_importance(model, feature_names):
         print(f"{feature_names[idx]:20} {importance[idx]:.4f}")
 
 
-def main():
+def main(register=False):
     csv_path = str(PROJECT_ROOT / "output/panini_cards_extracted.csv")
 
     print("Loading data...")
@@ -196,6 +196,28 @@ def main():
 
     show_feature_importance(best_model, X.columns.tolist())
 
+    if register:
+        from models.registry import register_model, build_metadata
+
+        metadata = build_metadata(
+            X, target_transform="log1p", best_params=best_params,
+        )
+        register_model(
+            model=best_model,
+            model_id="v4_xgb_ocr_tabular_research",
+            version="v4",
+            framework="xgboost",
+            pipeline_type="ocr_tabular",
+            description="V4 XGBoost, 24 features, log1p target, 10-trial best (80/20 split)",
+            metrics=avg_metrics,
+            metadata=metadata,
+        )
+
 
 if __name__ == "__main__":
-    main()
+    import argparse
+    parser = argparse.ArgumentParser(description="XGBoost V4 trainer")
+    parser.add_argument("--register", action="store_true",
+                        help="Register best model in the model registry")
+    args = parser.parse_args()
+    main(register=args.register)

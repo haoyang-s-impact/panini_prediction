@@ -24,7 +24,7 @@ PARAM_DIST = {
 
 
 # %%
-def main(pca_n=30, no_emb=False):
+def main(pca_n=30, no_emb=False, register=False):
     include_emb = not no_emb
     mode = "tabular only" if no_emb else f"tabular + PCA-{pca_n}"
     print(f"=== XGBoost V5 ({mode}) ===\n")
@@ -55,6 +55,24 @@ def main(pca_n=30, no_emb=False):
     avg, results, best_model = run_trials(model_factory, X, y)
     show_feature_importance(best_model, X.columns.tolist())
 
+    if register:
+        from models.registry import register_model, build_metadata
+
+        suffix = "tab" if no_emb else f"pca{pca_n}"
+        model_id = f"v5_xgb_{suffix}"
+        metadata = build_metadata(X, best_params=best_params)
+
+        register_model(
+            model=best_model,
+            model_id=model_id,
+            version="v5",
+            framework="xgboost",
+            pipeline_type=f"ocr_tabular{'_' + suffix if not no_emb else ''}",
+            description=f"V5 XGBoost ({mode}), 10-trial best",
+            metrics=avg,
+            metadata=metadata,
+        )
+
     return avg, results, best_model
 
 
@@ -65,5 +83,7 @@ if __name__ == "__main__":
                         help="PCA embedding dimensions (default: 30)")
     parser.add_argument("--no-emb", action="store_true",
                         help="Tabular features only (no embeddings)")
+    parser.add_argument("--register", action="store_true",
+                        help="Register best model in the model registry")
     args = parser.parse_args()
-    main(pca_n=args.pca, no_emb=args.no_emb)
+    main(pca_n=args.pca, no_emb=args.no_emb, register=args.register)

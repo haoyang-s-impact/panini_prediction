@@ -17,7 +17,7 @@ pip install -r requirements.txt
 # Train and save production model (must run before app)
 python -m models.train_production_model
 
-# Show saved model metadata
+# Show all registered models
 python -m models.train_production_model --info
 
 # Launch web app
@@ -33,18 +33,32 @@ python -m data.panini_card_ocr_etl
 # Test feature extractors on sample OCR data
 python -m tests.test_extractors
 
+# --- Model Registry ---
+# All training scripts support --register to save the best model to the registry.
+# The registry lives at models/saved/registry.json.
+# Production model is auto-registered as active; research models are not active by default.
+
+# Set active model (for serving):
+python -c "from models.registry import set_active_model; set_active_model('v5_catboost_tab')"
+
+# List all registered models:
+python -c "from models.registry import print_models; print_models()"
+
 # --- Model Training (research) ---
 # Train price prediction models (reads output/panini_cards_extracted.csv)
+# Add --register to save the best trial model to the registry.
 python models/train_price_regressor.py      # V1: boolean + numeric features only
 python models/train_price_regressor_v2.py   # V2: adds categorical features (native XGBoost)
 python models/train_price_regressor_v3.py   # V3: adds RandomizedSearchCV hyperparameter tuning
 python models/train_price_regressor_v4.py   # V4: derived features + log-transformed target
 
 # V5: Tabular + image embeddings (Session 3 — XGBoost, LightGBM, CatBoost)
+# Add --register to save the best trial model to the registry.
 python -m models.train_price_regressor_v5_xgb --pca 30       # XGBoost + PCA-30 embeddings
 python -m models.train_price_regressor_v5_xgb --no-emb       # XGBoost tabular only (V4 baseline)
 python -m models.train_price_regressor_v5_lgbm --pca 30      # LightGBM + PCA-30 embeddings
 python -m models.train_price_regressor_v5_catboost --pca 30   # CatBoost + PCA-30 embeddings
+python -m models.train_price_regressor_v5_catboost --no-emb --register  # Train + register
 
 # --- Analysis ---
 # Run model comparison report (trains all versions, generates plots)
@@ -100,9 +114,19 @@ The project has four stages:
 - V5: 24 tabular + PCA image embeddings (30/50/64), compares XGBoost/LightGBM/CatBoost. Uses raw target (Session 1 finding). Shared utilities in `data/data_utils.py` and `models/model_utils.py`.
 - All versions run 10 random-seed trials and report average MAE/RMSE/R2
 
+**Model Registry** (`models/registry.py`, `models/saved/registry.json`)
+- Central registry for all trained models — tracks artifacts, metrics, and metadata
+- `register_model()` saves `model.joblib` + `metadata.json` to `models/saved/{model_id}/` and updates `registry.json`
+- `load_model(model_id)` loads specific model; `load_model()` loads the active model
+- `set_active_model(model_id)` sets which model the serving layer uses
+- `list_models()` / `print_models()` shows all registered models with metrics
+- `build_metadata(X)` helper builds standard metadata dict from training DataFrame
+- Model ID convention: `{version}_{framework}_{pipeline}` (e.g., `v5_catboost_tab`, `v4_xgb_ocr_tabular`)
+- Production model (`train_production_model.py`) auto-sets `set_active=True`; research scripts register with `set_active=False`
+
 **Stage 4: Serving** (`serve/`, `models/train_production_model.py`)
-- `models/train_production_model.py` — trains V4 on all data, saves `models/saved/model.joblib` + `metadata.json`. Entry point: `python -m models.train_production_model`.
-- `serve/model_registry.py` — serving-only: `load_model()` loads pre-trained model + metadata from disk. No training code.
+- `models/train_production_model.py` — trains V4 on all data, registers as active model via `models.registry`. Entry point: `python -m models.train_production_model`.
+- `serve/model_registry.py` — thin wrapper around `models.registry.load_model()`. Preserves serve-layer API.
 - `serve/inference.py` — `predict_from_image(image_bytes)`: single function that chains EasyOCR → feature extraction → XGBoost prediction. Reuses extraction functions from `data/panini_card_ocr_etl.py` directly. Auto-detects GPU for EasyOCR.
 - `serve/claude_reasoning.py` — calls Claude API (Haiku 4.5) to generate natural language analysis of the prediction. Graceful fallback if no API key.
 - `serve/app.py` — Streamlit frontend: upload image → display predicted price, extracted features, Claude analysis, raw OCR debug. Auto-detects GPU for EasyOCR.
@@ -120,14 +144,18 @@ result = predict_from_image(open("pics/test.jpg", "rb").read())
 ```
 
 **Key files:**
-- `serve/app.py` — Streamlit frontend: upload image → display predicted price, extracted features, Claude analysis, raw OCR debug.
-- `serve/model_registry.py` — serving-only: `load_model()` loads model + metadata from `models/saved/`. Training is handled by `models/train_production_model.py`.
-- `serve/inference.py` — `predict_from_image(image_bytes) → dict`. Orchestrates OCR → features → predict. Auto-detects GPU via `torch.cuda.is_available()`.
+- `serve/app.py` — Streamlit frontend: upload image → display predicted price, extracted features, Claude analysis, raw OCR debug. Auto-routes to the correct inference module based on active model's framework.
+- `serve/model_registry.py` — thin wrapper around `models.registry.load_model()`. Preserves serve-layer API.
+- `serve/inference.py` — V4 XGBoost inference: `predict_from_image(image_bytes) → dict`. Uses log1p target transform. Also exports shared OCR/feature extraction functions.
+- `serve/inference_v5_catboost.py` — V5 CatBoost inference: `predict_from_image(image_bytes) → dict`. Uses raw target (no log transform), string categoricals with cat_indices.
 - `serve/claude_reasoning.py` — `get_analysis(prediction) → str | None`. Requires `ANTHROPIC_API_KEY` env var.
 
+**Inference routing:** `app.py` checks `get_active_model()["framework"]` and imports from `inference_v5_catboost` for CatBoost or `inference` for XGBoost/LightGBM.
+
 **Model artifacts** (`models/saved/`, gitignored):
-- `model.joblib` — serialized XGBoost with categorical support
-- `metadata.json` — feature names, dtypes, category mappings, hyperparams, `pipeline_type`
+- `registry.json` — model registry index (all registered models, active model pointer)
+- `{model_id}/model.joblib` — serialized model (XGBoost, LightGBM, or CatBoost)
+- `{model_id}/metadata.json` — feature names, dtypes, category mappings, hyperparams, `pipeline_type`
 
 ## Analysis Scripts (`analysis/`)
 
@@ -147,6 +175,7 @@ result = predict_from_image(open("pics/test.jpg", "rb").read())
 
 ## Model Utilities (`models/`)
 
+- `models/registry.py` — model registry: `register_model()`, `load_model()`, `set_active_model()`, `list_models()`, `print_models()`, `build_metadata()`
 - `models/model_utils.py` — shared training utilities for V5: `run_trials()`, `tune_hyperparameters()`, `prepare_for_catboost()`, `show_feature_importance()`
 
 ## Output Directories

@@ -1,17 +1,17 @@
 """Train and save the production V4 XGBoost model.
 
-Trains on ALL data (no hold-out) and persists to models/saved/ for serving.
+Trains on ALL data (no hold-out) and registers as the active model in the registry.
 
 Usage:
-    python -m models.train_production_model          # Train and save
-    python -m models.train_production_model --info   # Show saved model metadata
+    python -m models.train_production_model          # Train and register
+    python -m models.train_production_model --info   # Show all registered models
 """
 
+import sys
 import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-import joblib
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import RandomizedSearchCV
@@ -24,18 +24,14 @@ from models.train_price_regressor_v4 import (
     _parse_card_year,
     load_and_prepare_data,
 )
+from models.registry import register_model, print_models
 
-DEFAULT_MODEL_DIR = PROJECT_ROOT / "models" / "saved"
 
+def train_and_save() -> str:
+    """Train V4 XGBoost on all data and register as active model.
 
-def train_and_save(output_dir: Path | str | None = None) -> Path:
-    """Train V4 XGBoost on all data and save model + metadata to disk.
-
-    Returns the output directory path.
+    Returns the model_id.
     """
-    output_dir = Path(output_dir or DEFAULT_MODEL_DIR)
-    output_dir.mkdir(parents=True, exist_ok=True)
-
     csv_path = str(PROJECT_ROOT / "output" / "panini_cards_extracted.csv")
 
     # Load and prepare data (V4: 24 features, log target)
@@ -70,16 +66,9 @@ def train_and_save(output_dir: Path | str | None = None) -> Path:
     model = XGBRegressor(**best_params, random_state=42, enable_categorical=True)
     model.fit(X, y_log)
 
-    # Save model
-    model_path = output_dir / "model.joblib"
-    joblib.dump(model, model_path)
-    print(f"\nSaved model to {model_path}")
-
     # Build metadata
     cat_cols = [col for col in X.columns if X[col].dtype.name == "category"]
-    category_mappings = {}
-    for col in cat_cols:
-        category_mappings[col] = list(X[col].cat.categories)
+    category_mappings = {col: list(X[col].cat.categories) for col in cat_cols}
 
     metadata = {
         "version": "v4",
@@ -96,23 +85,24 @@ def train_and_save(output_dir: Path | str | None = None) -> Path:
         "target_transform": "log1p",
     }
 
-    metadata_path = output_dir / "metadata.json"
-    with open(metadata_path, "w") as f:
-        json.dump(metadata, f, indent=2)
-    print(f"Saved metadata to {metadata_path}")
+    # Register as active model
+    model_id = register_model(
+        model=model,
+        model_id="v4_xgb_ocr_tabular",
+        version="v4",
+        framework="xgboost",
+        pipeline_type="ocr_tabular",
+        description="V4 XGBoost, 24 tabular features, log1p target, trained on ALL data",
+        metrics={"cv_r2_log": float(cv_r2)},
+        metadata=metadata,
+        set_active=True,
+    )
 
-    return output_dir
+    return model_id
 
 
 if __name__ == "__main__":
     if "--info" in sys.argv:
-        model_path = DEFAULT_MODEL_DIR / "metadata.json"
-        if model_path.exists():
-            with open(model_path) as f:
-                print("Saved model metadata:")
-                print(json.dumps(json.load(f), indent=2))
-        else:
-            print(f"No saved model found at {DEFAULT_MODEL_DIR}.")
-            print("Run `python -m models.train_production_model` to train and save.")
+        print_models()
     else:
         train_and_save()

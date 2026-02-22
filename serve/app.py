@@ -3,17 +3,51 @@
 Upload a card auction screenshot and get an AI-powered price prediction.
 
 Usage:
-    streamlit run serve/app.py
+    streamlit run serve/app.py                                  # use active model
+    streamlit run serve/app.py -- --model v5_catboost_tab       # use specific model
+    streamlit run serve/app.py -- --model v4_xgb_ocr_tabular   # use V4 XGBoost
 """
 
-import streamlit as st
+import sys
 from pathlib import Path
+
+# Ensure project root is on sys.path so `models` and `data` packages are importable
+_project_root = str(Path(__file__).resolve().parent.parent)
+if _project_root not in sys.path:
+    sys.path.insert(0, _project_root)
+
+import streamlit as st
+
+# --- Parse --model argument before Streamlit consumes argv ---
+_model_id_override = None
+if "--model" in sys.argv:
+    idx = sys.argv.index("--model")
+    if idx + 1 < len(sys.argv):
+        _model_id_override = sys.argv[idx + 1]
 
 st.set_page_config(
     page_title="Panini Card Price Predictor",
     page_icon="🏀",
     layout="wide",
 )
+
+
+def _resolve_model_id() -> str | None:
+    """Return the model ID to serve (from CLI arg or registry active model)."""
+    if _model_id_override:
+        return _model_id_override
+    from models.registry import get_active_model
+    entry = get_active_model()
+    return entry["model_id"] if entry else None
+
+
+def _get_model_entry(model_id: str) -> dict | None:
+    """Get registry entry for the given model ID."""
+    from models.registry import list_models
+    for m in list_models():
+        if m["model_id"] == model_id:
+            return m
+    return None
 
 
 @st.cache_resource
@@ -26,20 +60,31 @@ def load_ocr_reader():
 
 
 @st.cache_resource
-def load_prediction_model():
-    """Load saved XGBoost model once, keep in memory."""
+def load_prediction_model(model_id: str):
+    """Load a specific model once, keep in memory."""
     from serve.model_registry import load_model
-    return load_model()
+    return load_model(model_id)
 
 
-def run_prediction(image_bytes: bytes) -> dict:
+def _get_predict_fn(framework: str, model_id: str):
+    """Return the right predict_from_image function for the model framework."""
+    if framework == "catboost":
+        import serve.inference_v5_catboost as mod
+        mod.MODEL_ID = model_id
+        return mod.predict_from_image
+    else:
+        import serve.inference as mod
+        mod.MODEL_ID = model_id
+        return mod.predict_from_image
+
+
+def run_prediction(image_bytes: bytes, framework: str, model_id: str) -> dict:
     """Run the full prediction pipeline on uploaded image bytes."""
-    # Pre-warm cached resources
     load_ocr_reader()
-    load_prediction_model()
+    load_prediction_model(model_id)
 
-    from serve.inference import predict_from_image
-    return predict_from_image(image_bytes)
+    predict_fn = _get_predict_fn(framework, model_id)
+    return predict_fn(image_bytes)
 
 
 def format_feature_value(key: str, value) -> str:
@@ -56,14 +101,24 @@ def format_feature_value(key: str, value) -> str:
 st.title("Panini Card Price Predictor")
 st.markdown("Upload a card auction screenshot to get an estimated sale price.")
 
-# Check if model is saved
-model_path = Path("models/saved/model.joblib")
-if not model_path.exists():
+# Resolve which model to serve
+serving_model_id = _resolve_model_id()
+
+if serving_model_id is None:
     st.error(
-        "No trained model found. Run `python -m models.train_production_model` "
-        "first to train and save the model."
+        "No active model in registry. Run `python -m models.train_production_model` "
+        "first to train and register a model."
     )
     st.stop()
+
+model_entry = _get_model_entry(serving_model_id)
+if model_entry is None:
+    st.error(f"Model '{serving_model_id}' not found in registry.")
+    st.stop()
+
+framework = model_entry["framework"]
+source = "CLI override" if _model_id_override else "registry active"
+st.caption(f"Model: **{serving_model_id}** ({framework}) — {source}")
 
 uploaded = st.file_uploader(
     "Upload card screenshot",
@@ -81,7 +136,7 @@ if uploaded is not None:
 
     with col_results:
         with st.spinner("Analyzing card... (first run may take ~10s to load OCR model)"):
-            result = run_prediction(image_bytes)
+            result = run_prediction(image_bytes, framework, serving_model_id)
 
         if result.get("error"):
             st.warning(result["error"])
