@@ -12,8 +12,6 @@ from rapidfuzz import fuzz, process
 import ast
 
 # Import NBA player data
-import sys
-sys.path.insert(0, str(Path(__file__).parent))
 from data.nba_players import (
     NBA_PLAYERS,
     CHINESE_NAME_MAP,

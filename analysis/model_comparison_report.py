@@ -3,7 +3,6 @@
 # Trains V1→V4 and compares performance with visualizations.
 
 # %%
-import sys
 from pathlib import Path
 import pandas as pd
 import numpy as np
@@ -17,9 +16,8 @@ from xgboost import XGBRegressor
 import os
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(PROJECT_ROOT / 'models'))
 
-os.makedirs(str(PROJECT_ROOT / 'output'), exist_ok=True)
+os.makedirs(str(PROJECT_ROOT / 'results'), exist_ok=True)
 
 CSV_PATH = str(PROJECT_ROOT / "output/panini_cards_extracted.csv")
 N_TRIALS = 10
@@ -53,9 +51,9 @@ axes[1].set_ylabel('Count')
 axes[1].legend()
 
 plt.tight_layout()
-plt.savefig(str(PROJECT_ROOT / 'output/price_distribution_log_transform.png'), dpi=150, bbox_inches='tight')
+plt.savefig(str(PROJECT_ROOT / 'results/price_distribution_log_transform.png'), dpi=150, bbox_inches='tight')
 plt.close()
-print("Saved output/price_distribution_log_transform.png")
+print("Saved results/price_distribution_log_transform.png")
 
 # %% [markdown]
 # ## 2. Train All 4 Versions
@@ -130,22 +128,22 @@ PARAM_DIST = {
 
 # ---- V1 loader ----
 def _load_v1(csv_path):
-    from train_price_regressor import load_and_prepare_data
+    from models.train_price_regressor import load_and_prepare_data
     return load_and_prepare_data(csv_path)
 
 # ---- V2 loader ----
 def _load_v2(csv_path):
-    from train_price_regressor_v2 import load_and_prepare_data
+    from models.train_price_regressor_v2 import load_and_prepare_data
     return load_and_prepare_data(csv_path)
 
 # ---- V3 loader ----
 def _load_v3(csv_path):
-    from train_price_regressor_v3 import load_and_prepare_data
+    from models.train_price_regressor_v3 import load_and_prepare_data
     return load_and_prepare_data(csv_path)
 
 # ---- V4 loader (returns X, y_real, y_log) ----
 def _load_v4(csv_path):
-    from train_price_regressor_v4 import load_and_prepare_data
+    from models.train_price_regressor_v4 import load_and_prepare_data
     return load_and_prepare_data(csv_path)
 
 # %%
@@ -235,9 +233,9 @@ ax.legend()
 ax.set_ylim(min(r2_values) - 0.05, max(max(r2_values) + 0.05, 1.0))
 
 plt.tight_layout()
-plt.savefig(str(PROJECT_ROOT / 'output/model_version_comparison.png'), dpi=150, bbox_inches='tight')
+plt.savefig(str(PROJECT_ROOT / 'results/model_version_comparison.png'), dpi=150, bbox_inches='tight')
 plt.close()
-print("Saved output/model_version_comparison.png")
+print("Saved results/model_version_comparison.png")
 
 # %% [markdown]
 # ## 5. Log-Transform Ablation
@@ -265,9 +263,9 @@ feat_gain_log = metrics['V4']['r2'] - metrics['V3+log']['r2']
 total_gain = metrics['V4']['r2'] - metrics['V3']['r2']
 
 plt.tight_layout()
-plt.savefig(str(PROJECT_ROOT / 'output/log_transform_ablation.png'), dpi=150, bbox_inches='tight')
+plt.savefig(str(PROJECT_ROOT / 'results/log_transform_ablation.png'), dpi=150, bbox_inches='tight')
 plt.close()
-print("Saved output/log_transform_ablation.png")
+print("Saved results/log_transform_ablation.png")
 
 print(f"\nAblation breakdown:")
 print(f"  V3 → V3+log (log transform only):     {log_gain*100:+.2f}pp R²")
@@ -299,9 +297,9 @@ axes[1].set_title('V4 Feature Importance (red = new features)')
 axes[1].set_xlabel('Importance')
 
 plt.tight_layout()
-plt.savefig(str(PROJECT_ROOT / 'output/feature_importance_comparison.png'), dpi=150, bbox_inches='tight')
+plt.savefig(str(PROJECT_ROOT / 'results/feature_importance_comparison.png'), dpi=150, bbox_inches='tight')
 plt.close()
-print("Saved output/feature_importance_comparison.png")
+print("Saved results/feature_importance_comparison.png")
 
 # %% [markdown]
 # ## 7. Summary
@@ -334,8 +332,8 @@ for idx in top5_idx:
     print(f"  {v4raw_feats[idx]:20s} {v4_imp[idx]:.4f}{marker}")
 
 print(f"\nGenerated plots:")
-print(f"  output/price_distribution_log_transform.png")
-print(f"  output/model_version_comparison.png")
-print(f"  output/log_transform_ablation.png")
-print(f"  output/feature_importance_comparison.png")
+print(f"  results/price_distribution_log_transform.png")
+print(f"  results/model_version_comparison.png")
+print(f"  results/log_transform_ablation.png")
+print(f"  results/feature_importance_comparison.png")
 print("="*70)

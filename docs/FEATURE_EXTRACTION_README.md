@@ -51,7 +51,7 @@ This comprehensive feature extraction system transforms raw OCR data from Panini
 - Parallel color mappings ("银折" → "Silver")
 - Descriptor keywords (autograph, rookie, patch, etc.)
 
-### 2. Configuration (`panini_card_ocr_etl.py`)
+### 2. Configuration (`data/panini_card_ocr_etl.py`)
 - **Spatial Zones**: Y-coordinate ranges for position-based extraction
 - **Confidence Thresholds**: Different thresholds per feature type
 - **Regex Patterns**: Comprehensive patterns for all features
@@ -104,15 +104,15 @@ Key dependencies:
 ### Running the ETL
 ```bash
 # If using Jupyter notebook
-jupyter notebook panini_card_ocr_etl.py
+jupyter notebook data/panini_card_ocr_etl.py
 
 # Or run as Python script
-python panini_card_ocr_etl.py
+python -m data.panini_card_ocr_etl
 ```
 
 ### Testing Extractors
 ```bash
-python test_extractors.py
+python -m tests.test_extractors
 ```
 
 ## Key Design Decisions

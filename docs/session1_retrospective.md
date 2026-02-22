@@ -21,7 +21,7 @@ The roadmap defines 5 sessions. Session 1 = feature engineering for tabular data
 | # | File | Action |
 |---|------|--------|
 | 1 | `data/nba_players.py` | Add `PLAYER_TIERS` dict (~80 players → 4 tiers) |
-| 2 | `panini_card_ocr_etl.py` | Add `compute_derived_features()` (11 new columns), integrate after aggregation |
+| 2 | `data/panini_card_ocr_etl.py` | Add `compute_derived_features()` (11 new columns), integrate after aggregation |
 | 3 | `train_price_regressor_v4.py` | **New.** 24 features, log-transformed target, fixed card_year, NaN-aware |
 | 4 | `model_comparison_report.py` | **New.** VS Code interactive report: train all versions, generate comparison plots |
 | 5 | `CLAUDE.md` | Add V4 + report commands and architecture descriptions |
@@ -55,7 +55,7 @@ The roadmap defines 5 sessions. Session 1 = feature engineering for tabular data
 - 12 superstars, 28 stars, 40 starters, default "rotation"
 - No issues
 
-### Step 2: `panini_card_ocr_etl.py` — Add derived features
+### Step 2: `data/panini_card_ocr_etl.py` — Add derived features
 - Added `PLAYER_TIERS` to import statement
 - Inserted `compute_derived_features(df)` function after `aggregate_card_features()`
 - Fixed `end_time` parsing bug: regex to handle `"2024-12-2021:34:02"` → `"2024-12-20 21:34:02"`
@@ -143,10 +143,10 @@ V3 → V4      (total log+features):       -7.33pp R²
 | `card_series` | 0.015 | no |
 
 ### Generated Artifacts
-- `output/price_distribution_log_transform.png` — raw vs log price histograms
-- `output/model_version_comparison.png` — R² bar chart across all 6 variants
-- `output/log_transform_ablation.png` — 4-bar ablation chart
-- `output/feature_importance_comparison.png` — V3 vs V4 side-by-side importance
+- `results/price_distribution_log_transform.png` — raw vs log price histograms
+- `results/model_version_comparison.png` — R² bar chart across all 6 variants
+- `results/log_transform_ablation.png` — 4-bar ablation chart
+- `results/feature_importance_comparison.png` — V3 vs V4 side-by-side importance
 
 ---
 

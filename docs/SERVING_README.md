@@ -40,14 +40,14 @@ A Streamlit web app where users upload a card auction screenshot and get an AI-p
 | `serve/model_registry.py` | Serving-only: `load_model()` loads pre-trained model + metadata from disk |
 | `serve/inference.py` | `predict_from_image(image_bytes)`: OCR → features → price prediction |
 | `serve/claude_reasoning.py` | Claude API call (Haiku 4.5) for natural language card analysis |
-| `app.py` | Streamlit frontend: upload image → display prediction + features + reasoning |
+| `serve/app.py` | Streamlit frontend: upload image → display prediction + features + reasoning |
 | `.env.example` | API key template (`ANTHROPIC_API_KEY`) |
 
 ### Modified (from research pipeline)
 
 | File | Change |
 |------|--------|
-| `panini_card_ocr_etl.py` | Guarded top-level execution behind `if __name__ == "__main__"` so extraction functions are importable without side effects |
+| `data/panini_card_ocr_etl.py` | Guarded top-level execution behind `if __name__ == "__main__"` so extraction functions are importable without side effects |
 | `requirements.txt` | Added streamlit, anthropic, python-dotenv, joblib |
 | `.gitignore` | Added `.env`, `models/saved/` |
 
@@ -77,7 +77,7 @@ python -m models.train_production_model --info
 ### Launch the web app
 
 ```bash
-streamlit run app.py
+streamlit run serve/app.py
 ```
 
 ### Use programmatically (without Streamlit)

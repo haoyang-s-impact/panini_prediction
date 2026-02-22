@@ -9,9 +9,9 @@
 Verify image embedding quality through multiple analyses.
 
 Reads embedding CSVs and card metadata, produces:
-- output/pca_variance_analysis.png  (scree plot + cumulative variance)
-- output/image_embedding_tsne.png   (t-SNE by player tier + price quartile)
-- output/image_similarity_analysis.png (cosine similarity heatmap + tier comparison)
+- results/pca_variance_analysis.png  (scree plot + cumulative variance)
+- results/image_embedding_tsne.png   (t-SNE by player tier + price quartile)
+- results/image_similarity_analysis.png (cosine similarity heatmap + tier comparison)
 - Console: nearest-neighbor analysis for sample cards
 
 Usage:
@@ -38,12 +38,13 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 # ## Configuration
 
 # %%
-OUTPUT_DIR = PROJECT_ROOT / 'output'
-CSV_PATH = OUTPUT_DIR / 'panini_cards_extracted.csv'
+DATA_DIR = PROJECT_ROOT / 'output'
+RESULTS_DIR = PROJECT_ROOT / 'results'
+CSV_PATH = DATA_DIR / 'panini_cards_extracted.csv'
 PCA_VARIANTS = [30, 50, 64]
 PCA_MAX = max(PCA_VARIANTS)
-EMBEDDINGS_PATH = OUTPUT_DIR / f'image_embeddings_pca{PCA_MAX}.csv'
-PCA_VARIANCE_PATH = OUTPUT_DIR / 'pca_explained_variance_ratio.npy'
+EMBEDDINGS_PATH = DATA_DIR / f'image_embeddings_pca{PCA_MAX}.csv'
+PCA_VARIANCE_PATH = DATA_DIR / 'pca_explained_variance_ratio.npy'
 
 
 # %% [markdown]
@@ -341,13 +342,13 @@ def main():
     merged, emb_cols = load_data()
 
     print("\n--- PCA Variance Analysis ---")
-    plot_pca_variance(OUTPUT_DIR)
+    plot_pca_variance(RESULTS_DIR)
 
     print("\n--- t-SNE Visualization ---")
-    plot_tsne(merged, emb_cols, OUTPUT_DIR)
+    plot_tsne(merged, emb_cols, RESULTS_DIR)
 
     print("\n--- Cosine Similarity Analysis ---")
-    plot_similarity_heatmap(merged, emb_cols, OUTPUT_DIR)
+    plot_similarity_heatmap(merged, emb_cols, RESULTS_DIR)
 
     print("\n--- Nearest Neighbor Analysis ---")
     print_nearest_neighbors(merged, emb_cols)
@@ -355,7 +356,7 @@ def main():
     print("\n" + "=" * 60)
     print("VERIFICATION COMPLETE")
     print("=" * 60)
-    print(f"Plots saved to {OUTPUT_DIR}/:")
+    print(f"Plots saved to {RESULTS_DIR}/:")
     print(f"  - pca_variance_analysis.png")
     print(f"  - image_embedding_tsne.png")
     print(f"  - image_similarity_analysis.png")

@@ -9,18 +9,14 @@ Usage:
 """
 
 import re
-import sys
 import tempfile
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
-
-from models.train_price_regressor_v4 import _parse_card_year
-from panini_card_ocr_etl import (
+from data.data_utils import _parse_card_year
+from data.panini_card_ocr_etl import (
     extract_bid_times,
     extract_card_series,
     extract_descriptors,

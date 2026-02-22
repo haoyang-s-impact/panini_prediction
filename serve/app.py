@@ -3,7 +3,7 @@
 Upload a card auction screenshot and get an AI-powered price prediction.
 
 Usage:
-    streamlit run app.py
+    streamlit run serve/app.py
 """
 
 import streamlit as st

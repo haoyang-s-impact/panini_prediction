@@ -89,9 +89,9 @@ ax4.set_ylabel('Sample Quantiles (standardized)')
 ax4.legend(fontsize=9)
 
 plt.tight_layout()
-plt.savefig(str(PROJECT_ROOT / 'output/price_skewness_analysis.png'), dpi=150, bbox_inches='tight')
+plt.savefig(str(PROJECT_ROOT / 'results/price_skewness_analysis.png'), dpi=150, bbox_inches='tight')
 plt.show()
-print("\nSaved to: output/price_skewness_analysis.png")
+print("\nSaved to: results/price_skewness_analysis.png")
 
 # %%
 # ========== SUMMARY ==========

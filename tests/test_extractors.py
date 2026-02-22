@@ -1,11 +1,8 @@
 """
 Test script to evaluate feature extractors on sample OCR data
 """
-import sys
-sys.path.insert(0, '.')
-
 import pandas as pd
-from panini_card_ocr_etl import (
+from data.panini_card_ocr_etl import (
     load_ocr_data,
     extract_player_name,
     extract_card_series,

@@ -8,7 +8,6 @@ Usage:
 """
 
 import json
-import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -19,7 +18,6 @@ from sklearn.model_selection import RandomizedSearchCV
 from xgboost import XGBRegressor
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
 
 from models.train_price_regressor_v4 import (
     PARAM_DIST,

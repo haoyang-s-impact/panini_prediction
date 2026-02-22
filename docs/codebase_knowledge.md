@@ -2,7 +2,7 @@
 
 Quick-reference for Claude sessions. Eliminates the need to re-explore the codebase from scratch each time.
 
-Last updated: Session 3 (2026-02-14)
+Last updated: Session 3+ (2026-02-22)
 
 ---
 
@@ -13,58 +13,71 @@ panini_prediction/
 ├── CLAUDE.md                              # Project instructions for Claude Code
 ├── requirements.txt                       # Python dependencies
 ├── .env.example                           # API key template (ANTHROPIC_API_KEY)
-├── app.py                                 # Stage 4: Streamlit web app frontend
-├── panini_card_extractor_interactive.py   # Stage 1: EasyOCR extraction
-├── extract_panini_info.py                 # Stage 1: PaddleOCR extraction (original)
-├── panini_card_ocr_etl.py                 # Stage 2: Feature extraction ETL (importable)
-├── test_extractors.py                     # Unit tests for feature extractors
-├── data/
+├── data/                                  # Data pipeline (Stages 1, 2, 2.5)
+│   ├── __init__.py                        # Package init
+│   ├── panini_card_extractor_interactive.py  # Stage 1: EasyOCR extraction
+│   ├── extract_panini_info.py             # Stage 1: PaddleOCR extraction (original)
+│   ├── panini_card_ocr_etl.py             # Stage 2: Feature extraction ETL (importable)
 │   ├── nba_players.py                     # Domain knowledge (players, teams, tiers, mappings)
-│   └── extract_image_embeddings.py        # Stage 2.5: ResNet50 → PCA embeddings
-├── models/
+│   ├── extract_image_embeddings.py        # Stage 2.5: ResNet50 → PCA embeddings
+│   └── data_utils.py                      # Shared data loading for V5 models
+├── models/                                # Stage 3: ML training
+│   ├── __init__.py                        # Package init
 │   ├── train_price_regressor.py           # V1: 6 features, baseline XGBoost
 │   ├── train_price_regressor_v2.py        # V2: 13 features + categoricals
 │   ├── train_price_regressor_v3.py        # V3: V2 + RandomizedSearchCV
 │   ├── train_price_regressor_v4.py        # V4: 24 features + derived + log target
-│   ├── train_production_model.py          # Stage 4: Train V4 on all data, save to disk
+│   ├── train_price_regressor_v5_xgb.py    # V5: XGBoost + embeddings
+│   ├── train_price_regressor_v5_lgbm.py   # V5: LightGBM + embeddings
+│   ├── train_price_regressor_v5_catboost.py # V5: CatBoost + embeddings
+│   ├── model_utils.py                     # Shared training utilities for V5
+│   ├── train_production_model.py          # Train V4 on all data, save to disk
 │   └── saved/                             # Model artifacts (gitignored)
 │       ├── model.joblib                   # Serialized XGBoost model (525KB)
 │       └── metadata.json                  # Feature schema, hyperparams, pipeline_type
-├── serve/
+├── analysis/                              # Experiment analysis & visualization
+│   ├── verify_embeddings.py               # Embedding verification: PCA, t-SNE, similarity
+│   ├── model_comparison_report.py         # Interactive report: all versions + ablation
+│   ├── analyze_price_skewness.py          # Price distribution visualization
+│   └── session3_comparison_report.py      # Session 3: 12-config ablation matrix
+├── serve/                                 # Stage 4: Serving
 │   ├── __init__.py                        # Package init
+│   ├── app.py                             # Streamlit web app frontend
 │   ├── model_registry.py                  # Serving-only: load_model() from disk
 │   ├── inference.py                       # predict_from_image(): OCR → features → predict
 │   └── claude_reasoning.py                # Claude API analysis (Haiku 4.5, optional)
-├── analysis/
-│   ├── verify_embeddings.py               # Embedding verification: PCA, t-SNE, similarity
-│   ├── model_comparison_report.py         # Interactive report: all versions + ablation
-│   └── analyze_price_skewness.py          # Price distribution visualization
+├── tests/                                 # Tests
+│   ├── __init__.py                        # Package init
+│   └── test_extractors.py                 # Unit tests for feature extractors
 ├── docs/
 │   ├── ROADMAP.md                         # 5-session feature roadmap
 │   ├── FEATURE_EXTRACTION_README.md       # Feature extraction documentation
 │   ├── session1_retrospective.md          # Session 1 learnings
 │   ├── session2_retrospective.md          # Session 2 learnings
+│   ├── session3_retrospective.md          # Session 3 learnings
 │   ├── SERVING_README.md                  # Web app serving architecture & design decisions
 │   └── codebase_knowledge.md              # This file
 ├── pics/                                  # 97 source images (auction screenshots)
-├── output/                                # All generated artifacts
+├── output/                                # Data prep artifacts
 │   ├── raw_ocr_output/                    # 97 .txt files (OCR per image)
 │   ├── panini_cards_extracted.csv         # Main dataset (97 rows × 37 cols)
 │   ├── image_embeddings_pca30.csv         # Embeddings: 97 × 31 (image + 30 dims)
 │   ├── image_embeddings_pca50.csv         # Embeddings: 97 × 51 (image + 50 dims)
 │   ├── image_embeddings_pca64.csv         # Embeddings: 97 × 65 (image + 64 dims)
-│   ├── pca_explained_variance_ratio.npy   # Saved PCA variance for verification
-│   ├── pca_variance_analysis.png          # Scree plot + cumulative variance curve
-│   ├── image_embedding_tsne.png           # t-SNE by player tier + price quartile
-│   ├── image_similarity_analysis.png      # Cosine similarity heatmap + tier comparison
-│   ├── model_version_comparison.png       # R² bar chart across V1-V4
-│   ├── feature_importance_comparison.png  # V3 vs V4 feature importance
-│   ├── price_distribution_log_transform.png
-│   ├── log_transform_ablation.png
-│   ├── price_skewness_analysis.png
-│   ├── ocr_data.csv                       # Legacy long-format OCR data
-│   ├── ocr_quality_report.csv             # Feature completeness stats
-│   └── cards_needing_review.csv           # Low-confidence rows flagged for review
+│   └── ...                                # Legacy CSVs (ocr_data, quality report)
+├── results/                               # All analysis/model plots
+│   ├── model_version_comparison.png       # Session 1: R² bar chart
+│   ├── feature_importance_comparison.png  # Session 1: V3 vs V4 importance
+│   ├── log_transform_ablation.png         # Session 1: ablation chart
+│   ├── price_distribution_log_transform.png # Session 1: raw vs log histograms
+│   ├── price_skewness_analysis.png        # Price distribution analysis
+│   ├── pca_variance_analysis.png          # Session 2: PCA scree plot
+│   ├── image_embedding_tsne.png           # Session 2: t-SNE visualization
+│   ├── image_similarity_analysis.png      # Session 2: cosine similarity heatmap
+│   ├── session3_framework_comparison.png  # Session 3: framework bars
+│   ├── session3_pca_effect.png            # Session 3: PCA dim effect
+│   ├── session3_full_results.png          # Session 3: full heatmap
+│   └── session3_feature_importance.png    # Session 3: CatBoost features
 └── .venv/                                 # Python 3.12.3 virtual environment
 ```
 
@@ -72,7 +85,7 @@ panini_prediction/
 
 ## 2. Key Functions by File
 
-### `panini_card_ocr_etl.py` (Stage 2 ETL)
+### `data/panini_card_ocr_etl.py` (Stage 2 ETL)
 | Function | Lines | Purpose |
 |----------|-------|---------|
 | `load_ocr_data()` | 383-407 | Load `.txt` files from raw_ocr_output/ → long-format DataFrame |

@@ -2,11 +2,14 @@
 
 ## Current State
 
-| Version | Approach | Features |
-|---------|----------|----------|
-| V1 | Baseline XGBoost | 6 features (bool + numeric) |
-| V2 | + More features | 13 features (+ categorical) |
-| V3 | + Hyperparameter tuning | RandomizedSearchCV |
+| Version | Approach | Features | Best R² |
+|---------|----------|----------|---------|
+| V1 | Baseline XGBoost | 6 features (bool + numeric) | -0.36 |
+| V2 | + More features | 13 features (+ categorical) | 0.11 |
+| V3 | + Hyperparameter tuning | RandomizedSearchCV | 0.25 |
+| V4-raw | + Derived features | 24 features, raw target | 0.35 |
+| **V5 CatBoost** | **+ Framework comparison** | **24 tabular (CatBoost)** | **0.44** |
+| V5 + embeddings | + Image embeddings | 24 tab + PCA-30/50/64 | 0.17-0.30 (hurts) |
 
 ---
 
@@ -85,7 +88,7 @@ Images contain signals text features miss:
 - Text keyword booleans: `is_fotl`, `is_case_hit`, `is_ssp`, `is_1of1`
 - Player tier mapping (star / all-star / regular)
 
-**Deliverables**: `train_price_regressor_v4.py`, updated `panini_card_ocr_etl.py`
+**Deliverables**: `train_price_regressor_v4.py`, updated `data/panini_card_ocr_etl.py`
 
 **Success Criteria**: +5% R² over V3
 
@@ -107,7 +110,7 @@ Images contain signals text features miss:
 
 ---
 
-### Session 3: Tree Models with Embeddings
+### Session 3: Tree Models with Embeddings ✅
 
 **Topic**: Gradient boosting with visual features
 
@@ -117,7 +120,9 @@ Images contain signals text features miss:
 - CatBoost implementation (best categorical handling)
 - Ablation study: compare with/without image embeddings
 
-**Deliverables**: `train_price_regressor_v5.py`, `_lgbm.py`, `_catboost.py`
+**Deliverables**: `train_price_regressor_v5_xgb.py`, `_v5_lgbm.py`, `_v5_catboost.py`, `data/data_utils.py`, `models/model_utils.py`, `analysis/session3_comparison_report.py`
+
+**Results**: CatBoost tabular-only is best (R²=0.44, +9.5pp over XGBoost V4). Embeddings hurt all frameworks — overfitting on 96 samples with 54-88 features. See `docs/session3_retrospective.md`.
 
 **Success Criteria**: +10-15% R² over V3, image embeddings show positive contribution
 

@@ -74,19 +74,19 @@ Session 1 ended with V4-raw at R²=0.35 (24 tabular features). The model had nev
 
 The scree plot shows a classic elbow around component 10-15, with diminishing returns after 30.
 
-![PCA Variance Analysis](../output/pca_variance_analysis.png)
+![PCA Variance Analysis](../results/pca_variance_analysis.png)
 
 ### t-SNE Observations
 - **By player tier:** No strong tier-based clustering. Expected — player tier is a market concept, not a visual one. A Stephen Curry card doesn't look fundamentally different from a Ja Morant card to a CNN.
 - **By price quartile:** Q4 (expensive) cards show slight upper-region tendency but mixed overall. Visual features alone don't cleanly separate price tiers.
 
-![t-SNE Visualization](../output/image_embedding_tsne.png)
+![t-SNE Visualization](../results/image_embedding_tsne.png)
 
 ### Cosine Similarity
 - Heatmap shows clear bright-red clusters — groups of visually similar cards (likely same-player batches)
 - Within-tier vs between-tier differences very small (~0.01-0.03). Again expected: visual similarity ≠ market tier.
 
-![Cosine Similarity Analysis](../output/image_similarity_analysis.png)
+![Cosine Similarity Analysis](../results/image_similarity_analysis.png)
 
 ### Nearest Neighbor Analysis (strongest signal)
 - **Ja Morant** cards found each other with 0.948, 0.850, 0.813 similarity — embeddings strongly capture same-player visual identity
@@ -98,9 +98,9 @@ The scree plot shows a classic elbow around component 10-15, with diminishing re
 - `output/image_embeddings_pca50.csv` — 97 rows × 51 cols
 - `output/image_embeddings_pca64.csv` — 97 rows × 65 cols
 - `output/pca_explained_variance_ratio.npy` — saved variance ratios for verification
-- `output/pca_variance_analysis.png` — scree plot + cumulative variance curve
-- `output/image_embedding_tsne.png` — t-SNE by player tier + price quartile
-- `output/image_similarity_analysis.png` — cosine similarity heatmap + tier comparison
+- `results/pca_variance_analysis.png` — scree plot + cumulative variance curve
+- `results/image_embedding_tsne.png` — t-SNE by player tier + price quartile
+- `results/image_similarity_analysis.png` — cosine similarity heatmap + tier comparison
 
 ---
 
