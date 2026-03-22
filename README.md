@@ -18,12 +18,14 @@ This project takes screenshots from Chinese auction platforms (WeChat / 闲鱼 X
 | V2 | 13 | XGBoost | 0.110 | + categorical features |
 | V3 | 13 | XGBoost | 0.254 | + hyperparameter tuning |
 | V4 | 24 | XGBoost | 0.353 | + derived features, raw target |
-| **V5** | **24** | **CatBoost** | **0.440** | **Best model — tabular only** |
+| V5 | 24 | CatBoost | 0.440 | Best model — tabular only |
+| **V5 + calibration** | **24** | **CatBoost** | **0.503** | **+ linear recalibration** |
 
 Key findings:
 - Log-transforming the target hurts performance on this small dataset
 - Image embeddings (ResNet50 + PCA) cause overfitting at 97 samples
 - CatBoost's native categorical handling outperforms XGBoost and LightGBM
+- Post-hoc linear calibration corrects regression-to-the-mean bias (+0.12 R²)
 
 ## Quick Start
 
@@ -45,13 +47,13 @@ streamlit run serve/app.py
 ## Pipeline Architecture
 
 ```
-┌─────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
-│  Stage 1    │    │  Stage 2     │    │  Stage 3     │    │  Stage 4     │
-│  OCR        │───▶│  Feature ETL │───▶│  ML Training │───▶│  Serving     │
-│             │    │              │    │              │    │              │
-│ pics/*.jpg  │    │ raw_ocr →    │    │ XGBoost /    │    │ Streamlit    │
-│ → EasyOCR   │    │ 37-col CSV   │    │ CatBoost     │    │ web app      │
-└─────────────┘    └──────────────┘    └──────────────┘    └──────────────┘
+┌─────────────┐    ┌──────────────┐    ┌──────────────┐    ┌─────────────┐    ┌──────────────┐
+│  Stage 1    │    │  Stage 2     │    │  Stage 3     │    │  Stage 3.5  │    │  Stage 4     │
+│  OCR        │───▶│  Feature ETL │───▶│  ML Training │───▶│ Calibration │───▶│  Serving     │
+│             │    │              │    │              │    │             │    │              │
+│ pics/*.jpg  │    │ raw_ocr →    │    │ CatBoost     │    │ linear      │    │ Streamlit    │
+│ → EasyOCR   │    │ 37-col CSV   │    │ (24 features)│    │ recalibrate │    │ web app      │
+└─────────────┘    └──────────────┘    └──────────────┘    └─────────────┘    └──────────────┘
 ```
 
 **Stage 1 — OCR** (`data/panini_card_extractor_interactive.py`): EasyOCR extracts Chinese + English text from auction screenshots with bounding box coordinates and confidence scores.
@@ -62,7 +64,9 @@ streamlit run serve/app.py
 
 **Stage 3 — Training** (`models/`): Five model versions (V1–V5) across XGBoost, LightGBM, and CatBoost with 10-seed trial averaging and RandomizedSearchCV tuning.
 
-**Stage 4 — Serving** (`serve/app.py`): Streamlit app accepts image uploads and displays predicted price, extracted features, Claude analysis, and raw OCR debug output.
+**Stage 3.5 — Calibration** (`models/calibration.py`): Linear recalibration corrects regression-to-the-mean bias. A 2-parameter transform (`slope * pred + intercept`) is fitted on 5-fold CV out-of-sample predictions and stored as `calibration.json` alongside the model. Auto-applied at inference time; backward-compatible (absent file = no transform).
+
+**Stage 4 — Serving** (`serve/app.py`): Streamlit app accepts image uploads and displays predicted price (with calibration applied), extracted features, Claude analysis, and raw OCR debug output.
 
 ## Web App
 
@@ -106,8 +110,9 @@ panini_prediction/
 │   ├── train_price_regressor_v4.py          # V4 + derived features
 │   ├── train_price_regressor_v5_*.py        # V5 multi-framework comparison
 │   ├── registry.py                          # Model registry
+│   ├── calibration.py                       # Linear recalibration (fit/apply/save/load)
 │   ├── model_utils.py                       # Shared training utilities
-│   └── saved/                               # Model artifacts (gitignored)
+│   └── saved/                               # Model artifacts + calibration.json (gitignored)
 ├── serve/                         # Web app + inference
 │   ├── app.py                               # Streamlit frontend
 │   ├── inference.py                         # XGBoost inference pipeline
@@ -117,6 +122,7 @@ panini_prediction/
 ├── analysis/                      # Experiment analysis scripts
 │   ├── model_comparison_report.py           # V1–V4 comparison plots
 │   ├── session3_comparison_report.py        # Framework × embedding ablation
+│   ├── calibration_analysis.py              # Calibration diagnostics + recalibration
 │   ├── analyze_price_skewness.py            # Price distribution analysis
 │   └── verify_embeddings.py                 # Embedding quality verification
 ├── tests/                         # Unit tests
@@ -145,7 +151,7 @@ python -c "from models.registry import set_active_model; set_active_model('v5_ca
 python -m models.train_price_regressor_v5_catboost --no-emb --register
 ```
 
-Each registered model stores `model.joblib` and `metadata.json` (feature schema, category mappings, hyperparameters) under `models/saved/{model_id}/`.
+Each registered model stores `model.joblib`, `metadata.json` (feature schema, category mappings, hyperparameters), and optionally `calibration.json` (linear recalibration parameters) under `models/saved/{model_id}/`.
 
 ## Tech Stack
 
@@ -163,17 +169,29 @@ Each registered model stores `model.joblib` and `metadata.json` (feature schema,
 ## Known Limitations
 
 - **Small dataset** — only 97 training samples, the primary constraint on model quality
+- **Extreme outliers** — 2 SGA rookie cards (200K + 349K CNY) dominate high-end error; calibration helps but can't fully resolve
 - **Overfitting risk** — image embeddings (54–88 features) hurt performance at this sample size
-- **OCR speed** — EasyOCR is slow on CPU (~2–3s per image); GPU is auto-detected when available
-- **Point estimates** — no confidence intervals on predictions
-- **Price leakage risk** — auction prices visible in screenshots could leak through image embeddings
+- **OCR data gaps** — card_year 56% populated, end_time 71% parsed, serial_max 25% populated
+- **Point estimates** — no confidence intervals or prediction uncertainty
+- **Global calibration** — same linear correction for all price ranges; per-segment calibration needs more data
+
+## Next Steps
+
+1. **More data** — scrape additional listings (target 500+ samples) to stabilize all model components. Include unsold listings with asking prices for richer market signal.
+2. **External features** — add player stats (career points, All-Star appearances, championships) and card population data as features that don't require more screenshots.
+3. **Prediction intervals** — add quantile regression or conformal prediction for uncertainty quantification so users know how much to trust each prediction.
+4. **Better image features** — crop to card region (top ~40%), use domain-specific embeddings; revisit once dataset exceeds 500 samples where embeddings may finally help.
+5. **Log-target CatBoost** — CatBoost handles targets differently than XGBoost; log-transform may reduce regression-to-mean without post-hoc calibration.
+6. **Production hardening** — feedback loop (track predictions vs outcomes), batch inference, monitoring for feature drift.
 
 ## Documentation
 
+- [Full Retrospective](docs/full_retrospective.md) — comprehensive overview across all 4 sessions
 - [Serving Architecture](docs/SERVING_README.md) — web app design and usage details
 - [Feature Extraction](docs/FEATURE_EXTRACTION_README.md) — detailed ETL documentation
 - [Roadmap](docs/ROADMAP.md) — planned features and next steps
-- [Session 1 Retrospective](docs/session1_retrospective.md) — model iteration learnings
-- [Session 2 Retrospective](docs/session2_retrospective.md) — image embedding experiments
-- [Session 3 Retrospective](docs/session3_retrospective.md) — tree model comparison
+- [Session 1 Retrospective](docs/session1_retrospective.md) — derived features + log-transform
+- [Session 2 Retrospective](docs/session2_retrospective.md) — image embedding pipeline
+- [Session 3 Retrospective](docs/session3_retrospective.md) — tree model + embedding comparison
+- [Session 4 Retrospective](docs/session4_retrospective.md) — calibration analysis + recalibration
 - [Codebase Knowledge](docs/codebase_knowledge.md) — dataset profile and model results
