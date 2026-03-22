@@ -186,12 +186,13 @@ Each registered model stores `model.joblib`, `metadata.json` (feature schema, ca
 
 ## Documentation
 
-- [Full Retrospective](docs/full_retrospective.md) — comprehensive overview across all 4 sessions
+- [Full Retrospective](docs/full_retrospective.md) — comprehensive overview across all 5 sessions
 - [Serving Architecture](docs/SERVING_README.md) — web app design and usage details
 - [Feature Extraction](docs/FEATURE_EXTRACTION_README.md) — detailed ETL documentation
 - [Roadmap](docs/ROADMAP.md) — planned features and next steps
 - [Session 1 Retrospective](docs/session1_retrospective.md) — derived features + log-transform
 - [Session 2 Retrospective](docs/session2_retrospective.md) — image embedding pipeline
 - [Session 3 Retrospective](docs/session3_retrospective.md) — tree model + embedding comparison
-- [Session 4 Retrospective](docs/session4_retrospective.md) — calibration analysis + recalibration
+- [Session 4 Retrospective](docs/session4_retrospective.md) — infrastructure + environment
+- [Session 5 Retrospective](docs/session5_retrospective.md) — calibration analysis + recalibration
 - [Codebase Knowledge](docs/codebase_knowledge.md) — dataset profile and model results

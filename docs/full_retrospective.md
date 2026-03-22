@@ -2,7 +2,7 @@
 
 ## Journey Overview
 
-Over four sessions, we built a complete pipeline — from raw Chinese auction screenshots to calibrated price predictions served via a web app. The model improved from worse-than-random (R²=-0.36) to meaningfully predictive (R²=0.50 calibrated), while the project grew from a single training script to a modular system with a model registry, calibration layer, and Streamlit frontend.
+Over five sessions, we built a complete pipeline — from raw Chinese auction screenshots to calibrated price predictions served via a web app. The model improved from worse-than-random (R²=-0.36) to meaningfully predictive (R²=0.50 calibrated), while the project grew from a single training script to a modular system with a model registry, calibration layer, and Streamlit frontend.
 
 ### Progression at a Glance
 
@@ -12,7 +12,8 @@ Over four sessions, we built a complete pipeline — from raw Chinese auction sc
 | **Session 1** | Derived features + log-transform | Log-transform hurts; new features are the real win | 0.35 (V4-raw) | +0.10 |
 | **Session 2** | Image embeddings (ResNet50 → PCA) | Embeddings cluster similar cards visually | 0.35 (unchanged) | — |
 | **Session 3** | 3 frameworks × 4 feature sets (12 configs) | CatBoost dominates; embeddings hurt at 96 samples | 0.44 (CatBoost) | +0.09 |
-| **Session 4** | Calibration analysis + linear recalibration | 2-parameter linear fix adds +0.12 R² | 0.50 (calibrated) | +0.06 |
+| **Session 4** | Infrastructure & environment | Registry, serving pipeline, folder reorg | 0.44 (unchanged) | — |
+| **Session 5** | Calibration analysis + linear recalibration | 2-parameter linear fix adds +0.12 R² | 0.50 (calibrated) | +0.06 |
 
 **Total improvement: R² from 0.25 to 0.50 (+0.25), RMSE from ~49K to ~31K CNY (-37%).**
 
@@ -70,7 +71,6 @@ Over four sessions, we built a complete pipeline — from raw Chinese auction sc
 - Created shared utilities (`data/data_utils.py`, `models/model_utils.py`) for clean separation of concerns
 - Built 3 V5 training scripts with CLI args (`--pca 30/50/64`, `--no-emb`, `--register`)
 - Ran full 12-config ablation matrix (3 frameworks × 4 feature sets)
-- Built model registry (`models/registry.py`) for tracking artifacts, metrics, and active model
 
 **What worked:**
 - **CatBoost tabular-only achieved R²=0.44** (+9.5pp over XGBoost V4), thanks to superior categorical handling via ordered target statistics
@@ -85,7 +85,30 @@ Over four sessions, we built a complete pipeline — from raw Chinese auction sc
 
 ---
 
-### Session 4: Calibration Analysis & Linear Recalibration
+### Session 4: Infrastructure & Environment
+
+**Goal:** Bridge the research pipeline into a production-ready system. Success criteria: web app serving, multi-framework support, organized codebase.
+
+**What we did:**
+- Reorganized flat file structure into packages: `data/`, `models/`, `serve/`, `analysis/`, `tests/`
+- Built model registry (`models/registry.py`) — JSON-based tracking with per-model artifact directories, active model pointer, and `--register` flag on all training scripts
+- Created Streamlit web app (`serve/app.py`) — upload screenshot → OCR → features → prediction → Claude analysis
+- Built framework-specific inference modules — `serve/inference.py` (XGBoost) and `serve/inference_v5_catboost.py` (CatBoost) sharing OCR/feature extraction code
+- Added Claude reasoning integration (`serve/claude_reasoning.py`) with graceful fallback
+- Created production training script (`models/train_production_model.py`) with auto-registration
+
+**Key engineering decisions:**
+- **Registry over MLflow** — lightweight JSON-based system sufficient at current scale; avoids heavy dependency
+- **Separate CatBoost inference module** — CatBoost requires string categoricals + `cat_indices`; separate modules keep each clean
+- **Metadata-driven schema** — each model stores feature names, dtypes, category mappings; inference adapts automatically
+- **Graceful degradation** — Claude reasoning returns `None` if no API key; core predictions always work
+- **Lazy singleton OCR** — EasyOCR loaded once via `@st.cache_resource`, avoiding 10s reload per prediction
+
+**Outcome: ALL THREE criteria met**
+
+---
+
+### Session 5: Calibration Analysis & Linear Recalibration
 
 **Goal:** Diagnose and correct the regression-to-the-mean bias observed in serving. Success criteria: diagnostic plots, R² improvement, backward-compatible serving integration.
 
@@ -129,10 +152,11 @@ Over four sessions, we built a complete pipeline — from raw Chinese auction sc
 
 ### Infrastructure
 
-- **Model Registry** (`models/registry.py`): Central registry tracking model artifacts, metrics, metadata, and active model pointer. Supports `register_model()`, `load_model()`, `set_active_model()`, `list_models()`.
-- **Calibration Module** (`models/calibration.py`): Fit, save, load, and apply linear recalibration — decoupled from both training and serving.
-- **Shared Utilities**: `data/data_utils.py` (data loading/merging) and `models/model_utils.py` (training/tuning/CatBoost prep) eliminate duplication across V5 scripts.
-- **Modular Serving**: `serve/app.py` auto-routes to the correct inference module based on active model framework (XGBoost vs CatBoost).
+- **Model Registry** (`models/registry.py`): Central registry tracking model artifacts, metrics, metadata, and active model pointer
+- **Calibration Module** (`models/calibration.py`): Fit, save, load, and apply linear recalibration — decoupled from training and serving
+- **Shared Utilities**: `data/data_utils.py` (data loading/merging) and `models/model_utils.py` (training/tuning/CatBoost prep)
+- **Modular Serving**: `serve/app.py` auto-routes to the correct inference module based on active model framework
+- **Organized Codebase**: Clean package structure (`data/`, `models/`, `serve/`, `analysis/`, `tests/`)
 
 ### Feature Engineering
 
@@ -143,7 +167,7 @@ Over four sessions, we built a complete pipeline — from raw Chinese auction sc
 ### Analysis & Diagnostics
 
 - 12-config ablation matrix with 4 comparison plots (Session 3)
-- 5 calibration diagnostic plots (Session 4)
+- 5 calibration diagnostic plots (Session 5)
 - Price skewness analysis, embedding verification suite
 - Per-session retrospectives documenting decisions and learnings
 
@@ -260,10 +284,10 @@ The original 5-session roadmap planned for neural networks (Session 4) and entit
 | 1 | Derived features + text keywords | Derived features + log-transform study | Text keywords (FOTL, SSP) had 0 occurrences — pivoted to log-transform hypothesis |
 | 2 | Image embeddings | Image embeddings | As planned |
 | 3 | Tree models + embeddings | Tree models + embeddings | As planned (embeddings failed, but CatBoost won) |
-| 4 | Neural network baseline | Calibration analysis | Serving model quality was more impactful than a new architecture |
-| 5 | Entity embeddings + ensemble | Not yet started | — |
+| 4 | Neural network baseline | Infrastructure & environment | Needed production-ready serving before further research |
+| 5 | Entity embeddings + ensemble | Calibration analysis | Serving model quality was more impactful than a new architecture |
 
-The deviation was the right call. Calibration delivered +0.12 R² improvement with a 2-parameter model — more impactful than a neural network would likely have been on 96 samples. The project prioritized **improving what we had** over **adding complexity**.
+The deviations were the right calls. Infrastructure (Session 4) was necessary to bridge research into a usable product. Calibration (Session 5) delivered +0.12 R² with a 2-parameter model — more impactful than neural networks or ensembles would likely have been on 96 samples. The project prioritized **shipping and improving what we had** over **adding complexity**.
 
 ---
 
@@ -279,4 +303,6 @@ The deviation was the right call. Calibration delivered +0.12 R² improvement wi
 
 5. **Ablation studies prevent false conclusions.** Without the 12-config matrix, we might have blamed the framework for embedding failure (or vice versa). Systematic comparison showed both effects clearly.
 
-6. **Prioritize serving quality over research novelty.** Replacing the neural network session with calibration analysis delivered more user-facing value with less complexity.
+6. **Infrastructure enables iteration.** Building the registry, serving layer, and organized codebase in Session 4 made Session 5's calibration work possible — without the serving pipeline, we wouldn't have observed the regression-to-mean bias in the first place.
+
+7. **Prioritize shipping over research novelty.** Replacing two planned research sessions (neural networks, ensembles) with infrastructure and calibration delivered more user-facing value with less complexity.
