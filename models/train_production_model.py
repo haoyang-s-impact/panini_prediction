@@ -14,11 +14,12 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import KFold, RandomizedSearchCV
 from xgboost import XGBRegressor
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
+from models.calibration import fit_calibration, save_calibration
 from models.train_price_regressor_v4 import (
     PARAM_DIST,
     _parse_card_year,
@@ -86,9 +87,10 @@ def train_and_save() -> str:
     }
 
     # Register as active model
-    model_id = register_model(
+    model_id = "v4_xgb_ocr_tabular"
+    register_model(
         model=model,
-        model_id="v4_xgb_ocr_tabular",
+        model_id=model_id,
         version="v4",
         framework="xgboost",
         pipeline_type="ocr_tabular",
@@ -97,6 +99,22 @@ def train_and_save() -> str:
         metadata=metadata,
         set_active=True,
     )
+
+    # Fit linear calibration via 5-fold CV on OOS predictions
+    print("\nFitting calibration via 5-fold CV...")
+    y_pred_oos = np.empty(len(y))
+    kf = KFold(n_splits=5, shuffle=True, random_state=42)
+    for train_idx, test_idx in kf.split(X):
+        fold_model = XGBRegressor(**best_params, random_state=42,
+                                  enable_categorical=True)
+        fold_model.fit(X.iloc[train_idx], y_log.iloc[train_idx])
+        preds_log = fold_model.predict(X.iloc[test_idx])
+        y_pred_oos[test_idx] = np.maximum(np.expm1(preds_log), 0)
+
+    cal_params = fit_calibration(y_pred_oos, y.values)
+    save_calibration(cal_params, model_id)
+    print(f"  Calibration: slope={cal_params['slope']:.4f}, "
+          f"intercept={cal_params['intercept']:,.2f}")
 
     return model_id
 

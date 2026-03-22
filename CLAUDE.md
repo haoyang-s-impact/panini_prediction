@@ -67,6 +67,10 @@ python analysis/model_comparison_report.py  # Session 1: outputs PNGs to results
 # Session 3: Tree models + embeddings comparison (12 configs, outputs to results/)
 python -m analysis.session3_comparison_report
 
+# Session 4: Calibration analysis — diagnose regression-to-mean, fit linear recalibration
+# Outputs 5 PNGs to results/ and saves calibration.json for the CatBoost model
+python -m analysis.calibration_analysis
+
 # Run price skewness analysis
 python analysis/analyze_price_skewness.py   # Outputs PNG to results/
 
@@ -123,6 +127,7 @@ The project has four stages:
 - `build_metadata(X)` helper builds standard metadata dict from training DataFrame
 - Model ID convention: `{version}_{framework}_{pipeline}` (e.g., `v5_catboost_tab`, `v4_xgb_ocr_tabular`)
 - Production model (`train_production_model.py`) auto-sets `set_active=True`; research scripts register with `set_active=False`
+- **Calibration** (`models/calibration.py`): Linear recalibration corrects regression-to-the-mean bias. `fit_calibration()` fits `actual = slope * pred + intercept` on CV OOS predictions. `save_calibration()` stores `calibration.json` in model artifact dir. Inference modules auto-apply if present.
 
 **Stage 4: Serving** (`serve/`, `models/train_production_model.py`)
 - `models/train_production_model.py` — trains V4 on all data, registers as active model via `models.registry`. Entry point: `python -m models.train_production_model`.
@@ -163,6 +168,7 @@ result = predict_from_image(open("pics/test.jpg", "rb").read())
 - `analysis/model_comparison_report.py` — VS Code interactive report: trains all 4 model versions + ablation variants, generates comparison plots to `results/`
 - `analysis/analyze_price_skewness.py` — price distribution visualization (histograms, box plots, Q-Q plots)
 - `analysis/session3_comparison_report.py` — Session 3: 12-config ablation matrix (3 frameworks × 4 feature sets), embedding-price correlation diagnostic, generates comparison plots to `results/`
+- `analysis/calibration_analysis.py` — Session 4: CatBoost calibration diagnostic (pred-vs-actual, residuals, error-by-bin, calibration curve, before/after recalibration). Saves `calibration.json` for the active model.
 
 ## Data Pipeline (`data/`)
 
@@ -177,6 +183,7 @@ result = predict_from_image(open("pics/test.jpg", "rb").read())
 
 - `models/registry.py` — model registry: `register_model()`, `load_model()`, `set_active_model()`, `list_models()`, `print_models()`, `build_metadata()`
 - `models/model_utils.py` — shared training utilities for V5: `run_trials()`, `tune_hyperparameters()`, `prepare_for_catboost()`, `show_feature_importance()`
+- `models/calibration.py` — linear recalibration: `fit_calibration()`, `apply_calibration()`, `save_calibration()`, `load_calibration()`. Stores `calibration.json` in `models/saved/{model_id}/`.
 
 ## Output Directories
 
@@ -205,6 +212,8 @@ The raw OCR data uses `半` (misread of `¥`) for CNY prices and contains mixed 
 - `docs/session1_retrospective.md` — Session 1 retrospective (model iteration learnings)
 - `docs/session2_retrospective.md` — Session 2 retrospective (image embeddings)
 - `docs/session3_retrospective.md` — Session 3 retrospective (tree models + embeddings comparison)
+- `docs/session4_retrospective.md` — Session 4 retrospective (calibration analysis + linear recalibration)
+- `docs/full_retrospective.md` — Comprehensive retrospective across all 4 sessions (journey, upgrades, limitations, future areas)
 - `docs/SERVING_README.md` — Web app serving architecture, usage, and design decisions
 - `docs/codebase_knowledge.md` — codebase inventory, dataset profile, model results (read this to skip re-exploration). **If the actual folder structure or file inventory differs from what this file describes, update it before proceeding.**
 

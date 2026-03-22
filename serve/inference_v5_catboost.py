@@ -14,6 +14,7 @@ import pandas as pd
 
 from data.data_utils import _parse_card_year
 from data.panini_card_ocr_etl import compute_derived_features
+from models.calibration import apply_calibration, load_calibration
 from serve.inference import _run_ocr, _extract_features_from_ocr
 from serve.model_registry import load_model
 
@@ -104,7 +105,13 @@ def predict_from_image(image_bytes: bytes) -> dict:
     price_pred = float(model.predict(X)[0])
     price_pred = max(price_pred, 0.0)
 
-    # 5. Build human-readable features for display
+    # 5. Apply linear calibration if available
+    cal_params = load_calibration(MODEL_ID)
+    if cal_params is not None:
+        price_pred = float(apply_calibration(price_pred, cal_params))
+
+
+    # 6. Build human-readable features for display
     display_features = {k: v for k, v in features.items() if v is not None}
 
     return {
